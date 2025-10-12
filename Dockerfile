@@ -1,0 +1,24 @@
+# Use an official Flutter image as the base image
+FROM ghcr.io/cirruslabs/flutter:stable
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the pubspec.yaml and pubspec.lock files to the container
+COPY pubspec.* ./
+
+# Run flutter pub get to fetch and update the dependencies
+#RUN flutter pub cache repair
+#RUN flutter pub get
+
+# Copy the entire project to the container
+COPY . .
+
+# Build the Flutter web application
+RUN flutter build web
+
+# Expose the port that the Flutter application uses
+EXPOSE 8080
+
+# Set the command to start the Flutter application
+CMD ["flutter", "run", "--release", "-d", "web-server", "--web-port", "8080", "--web-hostname", "0.0.0.0"]

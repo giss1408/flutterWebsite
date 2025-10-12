@@ -1,0 +1,18 @@
+# docker build -t <DOCKER NAME> .
+# docker run -d -p <PORT FOR DOCKER>:<THE EXPOSE PORT> <DOCKER NAME>
+# docker run -it --rm -p <PORT FOR DOCKER>:<THE EXPOSE PORT> <DOCKER NAME>
+
+### List all images
+docker ps -a
+docker ps -f
+docker rm
+docker images -f
+docker rmi
+Docker v1.9.0 release notes
+docker volume ls
+docker volume rm
+
+
+# From chatgpt
+* docker build -t flutter-web-app .
+* docker run -it --rm -p 8080:8080 flutter-web-app
