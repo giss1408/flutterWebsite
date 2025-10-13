@@ -292,7 +292,7 @@ class GetStarted extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text("Made in Germany, Powered by ",
-                      style: headlineSecondaryTextStyle.copyWith(fontSize: 24)),
+                      style: headlineSecondaryTextStyle.copyWith(fontSize: 12)),
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: Image.asset("assets/images/google_logo.png",
@@ -307,37 +307,37 @@ class GetStarted extends StatelessWidget {
                     children: [
                       const TextSpan(
                           text: "Regisse__ #Business Solutions ... est une ",
-                          style: headlineSecondaryTextStyle),
+                          style: bodyTextStyle),
                       TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {}, //() {
                           //openUrl("https://flutter.dev/docs");
                           //},
                           text: "compagnie jeune",
-                          style: headlineSecondaryTextStyle.copyWith(
+                          style: bodyTextStyle.copyWith(
                               color: primary)),
                       const TextSpan(
                           text: ", qui développe des solutions ",
-                          style: headlineSecondaryTextStyle),
+                          style: bodyTextStyle),
                       TextSpan(
                           recognizer: TapGestureRecognizer()..onTap = () {},
                           //openUrl("https://flutter.dev/web");
                           //},
                           text: "simples et sécurisées ( SaaS )",
-                          style: headlineSecondaryTextStyle.copyWith(
+                          style: bodyTextStyle.copyWith(
                               color: primary)),
                       const TextSpan(
-                          text: ", et ", style: headlineSecondaryTextStyle),
+                          text: ", et ", style: bodyTextStyle),
                       TextSpan(
                           recognizer: TapGestureRecognizer()..onTap = () {},
                           // openUrl("https://flutter.dev/desktop");
                           //},
                           text: "rapidement déployées",
-                          style: headlineSecondaryTextStyle.copyWith(
+                          style: bodyTextStyle.copyWith(
                               color: primary)),
                       const TextSpan(
                           text: " pour votre business en ligne.",
-                          style: headlineSecondaryTextStyle),
+                          style: bodyTextStyle),
                     ],
                   ),
                   textAlign: TextAlign.center,

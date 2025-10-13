@@ -6,23 +6,34 @@ class WidgetSlideUpDownFadeAnimation extends StatelessWidget {
   final bool direction;
   final Widget child;
 
-  const WidgetSlideUpDownFadeAnimation(
-      {super.key, required this.duration, required this.offset, required this.direction, required this.child});
+  const WidgetSlideUpDownFadeAnimation({
+    super.key, 
+    required this.duration, 
+    required this.offset, 
+    required this.direction, 
+    required this.child
+  });
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
+    // Use more efficient TweenAnimationBuilder for better performance
+    return TweenAnimationBuilder<double>(
       duration: duration,
-      opacity: direction ? 1 : 0,
-      curve: direction ? Curves.easeIn : Curves.easeOut,
-      child: AnimatedContainer(
-        duration: duration,
-        transform: direction
-            ? Matrix4.translationValues(0, 0, 0)
-            : Matrix4.translationValues(offset.dx, offset.dy, 0),
-        curve: direction ? Curves.linear : Curves.linear,
-        child: child,
-      ),
+      tween: Tween<double>(begin: direction ? 0.0 : 1.0, end: direction ? 1.0 : 0.0),
+      curve: direction ? Curves.easeInOut : Curves.easeOut,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(
+              offset.dx * (1.0 - value),
+              offset.dy * (1.0 - value),
+            ),
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 }

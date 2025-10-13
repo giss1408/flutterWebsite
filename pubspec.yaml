@@ -21,8 +21,6 @@ dependencies:
   universal_io: ^2.2.2
   responsive_framework: ^1.5.1
   flutter_svg: ^2.0.10+1
-#  responsive_framework:
-#    path: responsive_framework/
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +33,11 @@ flutter:
     - assets/images/
     - assets/videos/
     - assets/images/logo.svg
+    - assets/images/device_frame.svg
+    - assets/images/slide_1-layer_1_Test.svg
+    - assets/images/slide_1-layer_2_Test.svg
+    - assets/images/slide_3-layer_2_Test.svg
+    - assets/images/slide_4-layer_2_Test.svg
   fonts:
     - family: Google Sans
       fonts:
