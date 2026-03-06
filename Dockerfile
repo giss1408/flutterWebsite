@@ -1,24 +1,30 @@
-# Use an official Flutter image as the base image
-FROM ghcr.io/cirruslabs/flutter:stable
+# ─── Stage 1: Build ───────────────────────────────────────────────────────────
+# Pin to the exact Flutter version in use (matches pubspec.yaml: >=3.24.0).
+# Bump this tag intentionally when upgrading Flutter.
+FROM ghcr.io/cirruslabs/flutter:3.24.2 AS builder
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the pubspec.yaml and pubspec.lock files to the container
-COPY pubspec.* ./
+# Copy manifests first so dependency resolution is cached independently of
+# source-code changes.  The layer is only invalidated when pubspec.* change.
+COPY pubspec.yaml pubspec.lock ./
+RUN flutter pub get
 
-# Run flutter pub get to fetch and update the dependencies
-#RUN flutter pub cache repair
-#RUN flutter pub get
-
-# Copy the entire project to the container
+# Copy the rest of the source tree and build a release-mode web bundle.
 COPY . .
+RUN flutter build web --release
 
-# Build the Flutter web application
-RUN flutter build web
+# ─── Stage 2: Serve ───────────────────────────────────────────────────────────
+# Discard the Flutter SDK entirely; serve only the ~5 MB of compiled assets.
+FROM nginx:1.26-alpine AS runner
 
-# Expose the port that the Flutter application uses
-EXPOSE 8080
+# Custom config: serves the Flutter SPA and redirects unknown paths to
+# index.html so client-side routing works on hard reload / direct URL access.
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Set the command to start the Flutter application
-CMD ["flutter", "run", "--release", "-d", "web-server", "--web-port", "8080", "--web-hostname", "0.0.0.0"]
+# Replace default web root with the compiled Flutter output.
+COPY --from=builder /app/build/web /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
