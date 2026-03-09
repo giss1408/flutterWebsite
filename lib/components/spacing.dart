@@ -25,4 +25,4 @@ EdgeInsets blockPadding(BuildContext context) =>
               value: EdgeInsets.symmetric(horizontal: 15, vertical: 45))
         ]).value;
 
-const EdgeInsets blockMargin = EdgeInsets.fromLTRB(10, 0, 10, 32);
+const EdgeInsets blockMargin = EdgeInsets.fromLTRB(10, 0, 10, 48);

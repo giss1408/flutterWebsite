@@ -6,13 +6,23 @@ const String fontFamily = "Google Sans";
 
 // Simple
 const TextStyle headlineTextStyle = TextStyle(
-    fontSize: 44, color: textPrimary, height: 1.2, fontFamily: fontFamily);
+    fontSize: 44,
+    color: textPrimary,
+    height: 1.2,
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.5);
 
 const TextStyle headlineSecondaryTextStyle = TextStyle(
-    fontSize: 28, color: textPrimary, height: 1.2, fontFamily: fontFamily);
+    fontSize: 28,
+    color: textPrimary,
+    height: 1.2,
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.w600,
+    letterSpacing: -0.3);
 
 const TextStyle bodyTextStyle = TextStyle(
-    fontSize: 16, color: textPrimary, height: 1.5, fontFamily: "Roboto");
+    fontSize: 16, color: textPrimary, height: 1.6, fontFamily: "Roboto");
 
 TextStyle bodyLinkTextStyle = bodyTextStyle.copyWith(color: primary);
 

@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/colors.dart';
 import 'package:flutter_website/ui/block_wrapper.dart';
 import 'package:flutter_website/ui/carousel/carousel.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:universal_io/io.dart';
 
 import 'ui/blocks.dart';
 
@@ -51,6 +49,7 @@ class MyApp extends StatelessWidget {
 }
 
 List<Widget> blocks = [
+  // ── Hero ────────────────────────────────────────────────────────────────────
   MaxWidthBox(
     maxWidth: 1200,
     child: FittedBox(
@@ -63,24 +62,22 @@ List<Widget> blocks = [
           child: RepaintBoundary(child: Carousel())),
     ),
   ),
+  // ── Value proposition ────────────────────────────────────────────────────────
   const BlockWrapper(GetStarted()),
+  // ── Social proof numbers ─────────────────────────────────────────────────────
+  const BlockWrapper(StatsRow()),
+  // ── Core expertises ──────────────────────────────────────────────────────────
   const BlockWrapper(Features()),
-  const BlockWrapper(BusinessDevelopment()),
-  const BlockWrapper(BeautifulUI()),
-  const BlockWrapper(NativePerformance()),
-  //const BlockWrapper(LearnFromDevelopers()),
-  //const BlockWrapper(WhoUsesFlutter()),
-  //const BlockWrapper(FlutterNewsRow()),
-  //const BlockWrapper(InstallFlutter()),
-  const BlockWrapper(LearnFromDevelopers()),
-  const BlockWrapper(WhoUsesFlutter()),
-  // Disabled codelab block for performance.
-  if (kIsWeb || Platform.isAndroid || Platform.isIOS)
-    const ResponsiveVisibility(
-      hiddenConditions: [Condition.smallerThan(name: DESKTOP)],
-      child: BlockWrapper(FlutterCodelab()),
-    ),
+  // ── Service detail panels (image + text) ─────────────────────────────────────
+  const ServicesShowcase(),
+  // ── How we work ──────────────────────────────────────────────────────────────
+  const BlockWrapper(ProcessSteps()),
+  // ── Client testimonials ───────────────────────────────────────────────────────
+  const BlockWrapper(Testimonials()),
+  // ── News ─────────────────────────────────────────────────────────────────────
   const BlockWrapper(FlutterNewsRow()),
+  // ── Contact CTA ───────────────────────────────────────────────────────────────
   const BlockWrapper(InstallFlutter()),
+  // ── Footer ────────────────────────────────────────────────────────────────────
   const Footer(),
 ];

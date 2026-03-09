@@ -36,13 +36,35 @@ class WebsiteMenuBar extends StatelessWidget {
                     Navigator.of(context).popUntil((route) => route.isFirst),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 5, 16, 5),
-                  // height: 40 matches the actual available height
-                  // (row 50 px − 5 px top/bottom padding = 40 px).
-                  // The previous height: 100 caused flutter_svg to compute
-                  // an intrinsic width based on the 100 px height, making the
-                  // Row overflow by ~0.7 px regardless of the Spacer.
-                  child: SvgPicture.asset("assets/images/logo.svg",
-                      height: 40, fit: BoxFit.contain),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset("assets/images/logo.svg",
+                          height: 36, width: 36, fit: BoxFit.contain),
+                      const SizedBox(width: 10),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Regisse",
+                              style: headlineSecondaryTextStyle.copyWith(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFF1F2937)),
+                            ),
+                            TextSpan(
+                              text: "__",
+                              style: headlineSecondaryTextStyle.copyWith(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: primary),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -285,7 +307,7 @@ class GetStarted extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       margin: blockMargin,
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 56),
@@ -547,7 +569,7 @@ class _ValuePillar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
       decoration: BoxDecoration(
         color: primaryLight,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -581,7 +603,7 @@ class Features extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       margin: blockMargin,
       padding: EdgeInsets.symmetric(
@@ -735,7 +757,7 @@ class _FeatureCard extends StatelessWidget {
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
         color: const Color(0xFFFAFBFD),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: border),
       ),
       child: Column(
@@ -838,7 +860,7 @@ class _BusinessDevelopmentState extends State<BusinessDevelopment> {
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       margin: blockMargin,
       padding: blockPadding(context),
@@ -983,7 +1005,7 @@ class _BeautifulUIState extends State<BeautifulUI> {
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       margin: blockMargin,
       padding: blockPadding(context),
@@ -1126,7 +1148,7 @@ class _NativePerformanceState extends State<NativePerformance> {
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       margin: blockMargin,
       padding: blockPadding(context),
@@ -1245,7 +1267,7 @@ class _LearnFromDevelopersState extends State<LearnFromDevelopers> {
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       margin: blockMargin,
       padding: blockPadding(context),
@@ -1358,7 +1380,7 @@ class WhoUsesFlutter extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       margin: blockMargin,
       padding: blockPadding(context),
@@ -1535,7 +1557,7 @@ class FlutterNewsCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1662,7 +1684,7 @@ class _FlutterCodelabState extends State<FlutterCodelab>
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: border)),
       margin: blockMargin,
       padding: blockPadding(context),
@@ -1758,7 +1780,7 @@ class InstallFlutter extends StatelessWidget {
       decoration: BoxDecoration(
           // Dark background differentiates this conversion-CTA block.
           color: const Color(0xFF0D1B2A),
-          borderRadius: BorderRadius.circular(4)),
+          borderRadius: BorderRadius.circular(12)),
       margin: blockMargin,
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 64),
       child: Align(
@@ -1906,6 +1928,636 @@ class InstallFlutter extends StatelessWidget {
     );
   }
 }
+
+// ─── StatsRow ─────────────────────────────────────────────────────────────────
+class StatsRow extends StatelessWidget {
+  const StatsRow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF0A3D8F), primary],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      margin: blockMargin,
+      padding: EdgeInsets.symmetric(
+          horizontal: isMobile ? 24 : 80, vertical: 48),
+      child: ResponsiveRowColumn(
+        layout: isMobile
+            ? ResponsiveRowColumnType.COLUMN
+            : ResponsiveRowColumnType.ROW,
+        rowMainAxisAlignment: MainAxisAlignment.spaceAround,
+        columnSpacing: 32,
+        children: const [
+          ResponsiveRowColumnItem(
+              child: _StatItem(value: "50+", label: "Projets livrés")),
+          ResponsiveRowColumnItem(
+              child: _StatItem(value: "4", label: "Pays couverts")),
+          ResponsiveRowColumnItem(
+              child: _StatItem(value: "98 %", label: "Satisfaction client")),
+          ResponsiveRowColumnItem(
+              child: _StatItem(value: "<4 sem.", label: "Time to market")),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatItem extends StatelessWidget {
+  final String value;
+  final String label;
+  const _StatItem({required this.value, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(value,
+            style: headlineTextStyle.copyWith(
+                fontSize: 42,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center),
+        const SizedBox(height: 6),
+        Text(label,
+            style: bodyTextStyle.copyWith(
+                fontSize: 13,
+                color: Colors.white70,
+                letterSpacing: 0.8),
+            textAlign: TextAlign.center),
+      ],
+    );
+  }
+}
+
+// ─── ServicesShowcase ─────────────────────────────────────────────────────────
+class ServicesShowcase extends StatelessWidget {
+  const ServicesShowcase({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaxWidthBox(
+      maxWidth: 1200,
+      child: Column(
+      children: const [
+        _ServicePanel(
+          tag: "SAAS & CLOUD",
+          title: "Plateformes SaaS\nsur Mesure",
+          description:
+              "Nous concevons et développons des plateformes SaaS robustes "
+              "adaptées à vos processus métier. De l'authentification "
+              "multi-tenant aux tableaux de bord analytiques, chaque "
+              "fonctionnalité est taillée pour votre secteur et vos "
+              "utilisateurs.",
+          linkLabel: "Voir nos solutions SaaS →",
+          imagePath: "assets/images/stock-market-2616931_1280.jpg",
+          imageOnLeft: false,
+        ),
+        _ServicePanel(
+          tag: "DESIGN & UX",
+          title: "Interfaces qui\nFont Convertir",
+          description:
+              "Design centré utilisateur, prototypage rapide et tests A/B. "
+              "Chaque écran est conçu pour réduire la friction, augmenter "
+              "l'engagement et refléter votre identité de marque — "
+              "de la maquette au pixel final.",
+          linkLabel: "Explorer notre approche design →",
+          imagePath: "assets/images/blackWoman_layer_4_1280.jpg",
+          imageOnLeft: true,
+        ),
+        _ServicePanel(
+          tag: "EXPANSION INTERNATIONALE",
+          title: "Solutions pour\nMarchés Globaux",
+          description:
+              "Présents à Berlin, Paris et en Afrique de l'Ouest, nous aidons "
+              "nos clients à lancer des produits adaptés à des marchés "
+              "multiculturels. Localisation, régulation locale et infrastructure "
+              "distribuée — nous gérons la complexité internationale.",
+          linkLabel: "Découvrir nos marchés →",
+          imagePath: "assets/images/abidjan-web.jpg",
+          imageOnLeft: false,
+        ),
+      ],
+      ),
+    );
+  }
+}
+
+class _ServicePanel extends StatelessWidget {
+  final String tag;
+  final String title;
+  final String description;
+  final String linkLabel;
+  final String imagePath;
+  final bool imageOnLeft;
+
+  const _ServicePanel({
+    required this.tag,
+    required this.title,
+    required this.description,
+    required this.linkLabel,
+    required this.imagePath,
+    required this.imageOnLeft,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDesktop = !ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
+
+    final imageWidget = ClipRRect(
+      borderRadius: isDesktop
+          ? BorderRadius.zero
+          : BorderRadius.circular(12),
+      child: Image.asset(
+        imagePath,
+        fit: BoxFit.cover,
+        height: isDesktop ? 400 : 220,
+        width: double.infinity,
+      ),
+    );
+
+    final textWidget = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+              color: primaryLight,
+              borderRadius: BorderRadius.circular(12)),
+          child: Text(tag,
+              style: bodyTextStyle.copyWith(
+                  fontSize: 11,
+                  color: primary,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.9)),
+        ),
+        const SizedBox(height: 16),
+        Text(title,
+            style: headlineTextStyle.copyWith(fontSize: 30, height: 1.2)),
+        const SizedBox(height: 12),
+        Container(
+            width: 32,
+            height: 2,
+            color: primary,
+            margin: const EdgeInsets.only(bottom: 16)),
+        Text(description,
+            style: bodyTextStyle.copyWith(fontSize: 15, height: 1.75)),
+        const SizedBox(height: 24),
+        GestureDetector(
+          onTap: () => {},
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(linkLabel,
+                    style: bodyTextStyle.copyWith(
+                        color: primary, fontWeight: FontWeight.bold)),
+                const SizedBox(width: 6),
+                const Icon(Icons.arrow_forward, color: primary, size: 14),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+
+    if (!isDesktop) {
+      return Container(
+        margin: blockMargin,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: border),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            imageWidget,
+            const SizedBox(height: 28),
+            textWidget,
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      margin: blockMargin,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: border),
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: imageOnLeft
+              ? [
+                  Expanded(flex: 5, child: imageWidget),
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(48),
+                      child: textWidget,
+                    ),
+                  ),
+                ]
+              : [
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(48),
+                      child: textWidget,
+                    ),
+                  ),
+                  Expanded(flex: 5, child: imageWidget),
+                ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─── ProcessSteps ─────────────────────────────────────────────────────────────
+class ProcessSteps extends StatelessWidget {
+  const ProcessSteps({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDesktop = !ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: const Color(0xFFF7F9FC),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: border)),
+      margin: blockMargin,
+      padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? 80 : 24,
+          vertical: isDesktop ? 72 : 48),
+      child: Column(
+        children: [
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+            decoration: BoxDecoration(
+              color: primaryLight,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text("NOTRE M\u00c9THODE",
+                style: bodyTextStyle.copyWith(
+                    fontSize: 11,
+                    color: primary,
+                    letterSpacing: 1.4,
+                    fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(height: 18),
+          Text(
+            "De l\u2019id\u00e9e au produit en 4 \u00e9tapes",
+            style: headlineTextStyle.copyWith(fontSize: 32),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            "Un process \u00e9prouv\u00e9, transparent et con\u00e7u pour minimiser le risque\n"
+            "tout en maximisant la v\u00e9locit\u00e9.",
+            style: bodyTextStyle.copyWith(
+                fontSize: 16,
+                color: const Color(0xFF6E7274),
+                height: 1.7),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 56),
+          ResponsiveRowColumn(
+            layout: isDesktop
+                ? ResponsiveRowColumnType.ROW
+                : ResponsiveRowColumnType.COLUMN,
+            rowCrossAxisAlignment: CrossAxisAlignment.start,
+            columnCrossAxisAlignment: CrossAxisAlignment.center,
+            rowSpacing: 20,
+            columnSpacing: 20,
+            children: const [
+              ResponsiveRowColumnItem(
+                rowFlex: 1,
+                rowFit: FlexFit.tight,
+                child: _StepCard(
+                  number: "01",
+                  icon: Icons.lightbulb_outline,
+                  title: "D\u00e9couverte & Strat\u00e9gie",
+                  description:
+                      "Atelier de cadrage pour comprendre vos enjeux "
+                      "m\u00e9tier, vos utilisateurs et vos objectifs de "
+                      "croissance. Livrable\u00a0: cahier des charges.",
+                ),
+              ),
+              ResponsiveRowColumnItem(
+                rowFlex: 1,
+                rowFit: FlexFit.tight,
+                child: _StepCard(
+                  number: "02",
+                  icon: Icons.design_services_outlined,
+                  title: "Design & Architecture",
+                  description:
+                      "Maquettes interactives et architecture cloud "
+                      "valid\u00e9es ensemble avant d\u2019\u00e9crire "
+                      "la premi\u00e8re ligne de code.",
+                ),
+              ),
+              ResponsiveRowColumnItem(
+                rowFlex: 1,
+                rowFit: FlexFit.tight,
+                child: _StepCard(
+                  number: "03",
+                  icon: Icons.code_outlined,
+                  title: "D\u00e9veloppement Agile",
+                  description:
+                      "Sprints de deux semaines avec d\u00e9mo \u00e0 "
+                      "chaque it\u00e9ration. Vous validez, on avance "
+                      "\u2014 aucune surprise \u00e0 la livraison.",
+                ),
+              ),
+              ResponsiveRowColumnItem(
+                rowFlex: 1,
+                rowFit: FlexFit.tight,
+                child: _StepCard(
+                  number: "04",
+                  icon: Icons.rocket_launch_outlined,
+                  title: "D\u00e9ploiement & Support",
+                  description:
+                      "Mise en production s\u00e9curis\u00e9e, monitoring "
+                      "continu et accompagnement post-lancement pour "
+                      "que votre produit performe d\u00e8s\u00a0J+1.",
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StepCard extends StatelessWidget {
+  final String number;
+  final IconData icon;
+  final String title;
+  final String description;
+
+  const _StepCard({
+    required this.number,
+    required this.icon,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(number,
+                  style: headlineTextStyle.copyWith(
+                      fontSize: 36,
+                      color: primaryLight,
+                      fontWeight: FontWeight.bold)),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: primaryLight,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Icon(icon, color: primary, size: 22),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Container(
+              width: 28,
+              height: 2,
+              color: primary,
+              margin: const EdgeInsets.only(bottom: 10)),
+          Text(title,
+              style:
+                  headlineSecondaryTextStyle.copyWith(fontSize: 17)),
+          const SizedBox(height: 8),
+          Text(description,
+              style: bodyTextStyle.copyWith(
+                  fontSize: 14,
+                  height: 1.7,
+                  color: const Color(0xFF5A5F63))),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Testimonials ─────────────────────────────────────────────────────────────
+class Testimonials extends StatelessWidget {
+  const Testimonials({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDesktop = !ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: border)),
+      margin: blockMargin,
+      padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? 80 : 24,
+          vertical: isDesktop ? 72 : 48),
+      child: Column(
+        children: [
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+            decoration: BoxDecoration(
+              color: primaryLight,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text("CE QU\u2019ILS EN DISENT",
+                style: bodyTextStyle.copyWith(
+                    fontSize: 11,
+                    color: primary,
+                    letterSpacing: 1.4,
+                    fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(height: 18),
+          Text(
+            "La confiance de nos clients,\nnotre meilleure r\u00e9f\u00e9rence",
+            style: headlineTextStyle.copyWith(fontSize: 32),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 56),
+          ResponsiveRowColumn(
+            layout: isDesktop
+                ? ResponsiveRowColumnType.ROW
+                : ResponsiveRowColumnType.COLUMN,
+            rowCrossAxisAlignment: CrossAxisAlignment.start,
+            rowSpacing: 24,
+            columnSpacing: 24,
+            children: const [
+              ResponsiveRowColumnItem(
+                rowFlex: 1,
+                rowFit: FlexFit.tight,
+                child: _TestimonialCard(
+                  quote:
+                      "Regisse__ a transform\u00e9 notre vision en un produit "
+                      "concret en moins de 6\u00a0semaines. L\u2019\u00e9quipe "
+                      "allie rigueur technique et compr\u00e9hension m\u00e9tier "
+                      "\u2014 exactement ce dont nous avions besoin pour lancer "
+                      "sur le march\u00e9 allemand.",
+                  name: "Amara D.",
+                  role: "CEO",
+                  company: "FinnoTech GmbH",
+                  avatarColor: Color(0xFF1565C0),
+                  initials: "AD",
+                ),
+              ),
+              ResponsiveRowColumnItem(
+                rowFlex: 1,
+                rowFit: FlexFit.tight,
+                child: _TestimonialCard(
+                  quote:
+                      "Notre plateforme de r\u00e9servation \u00e9tait vieillissante. "
+                      "Regisse__ l\u2019a enti\u00e8rement repens\u00e9e en gardant "
+                      "la logique m\u00e9tier existante. R\u00e9sultat\u00a0: "
+                      "+34\u00a0% de conversions d\u00e8s le premier mois.",
+                  name: "Isabelle M.",
+                  role: "Directrice Digitale",
+                  company: "Tourisma SA",
+                  avatarColor: Color(0xFF00897B),
+                  initials: "IM",
+                ),
+              ),
+              ResponsiveRowColumnItem(
+                rowFlex: 1,
+                rowFit: FlexFit.tight,
+                child: _TestimonialCard(
+                  quote:
+                      "Ce qui m\u2019a convaincu, c\u2019est leur approche "
+                      "structur\u00e9e\u00a0: un atelier de cadrage s\u00e9rieux, "
+                      "des maquettes valid\u00e9es avant tout d\u00e9veloppement, "
+                      "et des livraisons ponctuelles \u00e0 chaque sprint.",
+                  name: "Kofi A.",
+                  role: "CTO",
+                  company: "LogiSoft Africa",
+                  avatarColor: Color(0xFFE65100),
+                  initials: "KA",
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TestimonialCard extends StatelessWidget {
+  final String quote;
+  final String name;
+  final String role;
+  final String company;
+  final Color avatarColor;
+  final String initials;
+
+  const _TestimonialCard({
+    required this.quote,
+    required this.name,
+    required this.role,
+    required this.company,
+    required this.avatarColor,
+    required this.initials,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F9FC),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: List.generate(
+              5,
+              (_) => const Padding(
+                padding: EdgeInsets.only(right: 3),
+                child: Icon(Icons.star, color: Color(0xFFF59E0B), size: 16),
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text("\u201C",
+              style: headlineTextStyle.copyWith(
+                  fontSize: 48, color: primary, height: 0.8)),
+          const SizedBox(height: 10),
+          Text(quote,
+              style: bodyTextStyle.copyWith(
+                  fontSize: 14,
+                  height: 1.75,
+                  color: const Color(0xFF4A4A4A))),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 22,
+                backgroundColor: avatarColor,
+                child: Text(initials,
+                    style: bodyTextStyle.copyWith(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold)),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(name,
+                      style: bodyTextStyle.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text("$role \u00b7 $company",
+                      style: bodyTextStyle.copyWith(
+                          fontSize: 12,
+                          color: const Color(0xFF888888))),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class Footer extends StatelessWidget {
   const Footer({super.key});
 
@@ -1936,10 +2588,37 @@ class Footer extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SvgPicture.asset(
-                      "assets/images/logo.svg",
-                      height: 48,
-                      fit: BoxFit.contain,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/images/logo.svg",
+                          height: 36, width: 36,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(width: 10),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Regisse",
+                                style: headlineSecondaryTextStyle.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white),
+                              ),
+                              TextSpan(
+                                text: "__",
+                                style: headlineSecondaryTextStyle.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: primary),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 12),
                     Text(
@@ -2080,7 +2759,7 @@ class _FooterLink extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(4),
+      borderRadius: BorderRadius.circular(12),
       child: Text(
         label,
         style: bodyTextStyle.copyWith(
