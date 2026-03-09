@@ -33,17 +33,51 @@ class MyApp extends StatelessWidget {
           const Breakpoint(start: 1081, end: double.infinity, name: DESKTOP),
         ],
       ),
-      home: Scaffold(
-        backgroundColor: background,
-        appBar: const PreferredSize(
-            preferredSize: Size(double.infinity, 66), child: WebsiteMenuBar()),
-        body: ListView.builder(
-            itemCount: blocks.length,
-            itemBuilder: (context, index) {
-              return blocks[index];
-            }),
-      ),
+      home: const _HomePage(),
       debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class _HomePage extends StatefulWidget {
+  const _HomePage();
+  @override
+  State<_HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<_HomePage> {
+  bool _menuOpen = false;
+
+  void _openMenu(BuildContext ctx) {
+    final future = WebsiteMenuBar.showMenu(ctx);
+    if (mounted) setState(() => _menuOpen = true);
+    future.then(
+      (_) { if (mounted) setState(() => _menuOpen = false); },
+      onError: (_) { if (mounted) setState(() => _menuOpen = false); },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: background,
+      appBar: PreferredSize(
+        preferredSize: const Size(double.infinity, 66),
+        // Builder gives us a context that sits inside the Scaffold (has a
+        // Scaffold ancestor) so showModalBottomSheet works correctly.
+        child: Builder(
+          builder: (scaffoldCtx) => WebsiteMenuBar(
+            onMenuPressed: () => _openMenu(scaffoldCtx),
+          ),
+        ),
+      ),
+      body: ListView.builder(
+        itemCount: blocks.length,
+        itemBuilder: (context, index) => blocks[index],
+      ),
+      // Sticky footer banner — hides when the menu sheet is open.
+      bottomNavigationBar:
+          _menuOpen ? null : const CompactFooterBanner(),
     );
   }
 }

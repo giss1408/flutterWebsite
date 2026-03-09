@@ -11,7 +11,104 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class WebsiteMenuBar extends StatelessWidget {
-  const WebsiteMenuBar({super.key});
+  const WebsiteMenuBar({super.key, this.onMenuPressed});
+
+  final VoidCallback? onMenuPressed;
+
+  /// Opens a navigation bottom-sheet menu. Ported from flutter_web's NavBar.
+  /// Returns a Future that completes when the sheet is dismissed.
+  static Future<void> showMenu(BuildContext context) {
+    const menuItems = [
+      {'label': 'Accueil', 'icon': Icons.home},
+      {'label': 'Services', 'icon': Icons.business_center},
+      {'label': 'Réalisations', 'icon': Icons.workspace_premium},
+      {'label': 'Blog', 'icon': Icons.article},
+      {'label': 'Contact', 'icon': Icons.contact_mail},
+    ];
+
+    return showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Menu',
+                      style: headlineSecondaryTextStyle.copyWith(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: primary,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(ctx),
+                      icon: const Icon(Icons.close, color: primary),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Nav items
+                ...List.generate(menuItems.length, (index) {
+                  return ListTile(
+                    leading: Icon(
+                      menuItems[index]['icon'] as IconData,
+                      color: textSecondary,
+                    ),
+                    title: Text(
+                      menuItems[index]['label'] as String,
+                      style: bodyTextStyle.copyWith(fontSize: 16),
+                    ),
+                    onTap: () {
+                      Navigator.pop(ctx);
+                      // Scroll-to-section or route navigation can be wired here.
+                    },
+                  );
+                }),
+                const SizedBox(height: 16),
+                // CTA
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all<Color>(primary),
+                      padding: WidgetStateProperty.all(
+                          const EdgeInsets.symmetric(vertical: 16)),
+                      shape: WidgetStateProperty.all(
+                        const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'Démarrer mon projet',
+                      style: buttonTextStyle.copyWith(
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +121,16 @@ class WebsiteMenuBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          const Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: Icon(Icons.menu, color: textPrimary, size: 28)),
+          // Hamburger — opens the navigation bottom-sheet menu
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: onMenuPressed,
+              child: const Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: Icon(Icons.menu, color: textPrimary, size: 28)),
+            ),
+          ),
           Flexible(
             fit: FlexFit.loose,
             child: MouseRegion(
@@ -2765,6 +2869,274 @@ class _FooterLink extends StatelessWidget {
         style: bodyTextStyle.copyWith(
           fontSize: 13,
           color: Colors.white.withOpacity(0.65),
+        ),
+      ),
+    );
+  }
+}
+
+/// Compact sticky footer banner — sits as [Scaffold.bottomNavigationBar].
+/// Tapping it opens a [DraggableScrollableSheet] with the full footer content.
+class CompactFooterBanner extends StatelessWidget {
+  const CompactFooterBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _showFullFooter(context),
+      child: Container(
+        color: backgroundDark,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            // Brand
+            SvgPicture.asset("assets/images/logo.svg",
+                height: 24, width: 24, fit: BoxFit.contain),
+            const SizedBox(width: 8),
+            Expanded(
+              child: RichText(
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Regisse",
+                      style: headlineSecondaryTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    ),
+                    TextSpan(
+                      text: "__",
+                      style: headlineSecondaryTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: primary),
+                    ),
+                    TextSpan(
+                      text: "  #Business Solutions",
+                      style: bodyTextStyle.copyWith(
+                          fontSize: 12,
+                          color: Colors.white.withOpacity(0.55)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            // YouTube icon
+            InkWell(
+              onTap: () => openUrl("https://www.youtube.com/@regisse"),
+              borderRadius: BorderRadius.circular(6),
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: Image.asset(
+                  "assets/images/icon_youtube_64x.png",
+                  height: 20,
+                  width: 20,
+                  color: Colors.white.withOpacity(0.6),
+                ),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(Icons.keyboard_arrow_up,
+                color: Colors.white.withOpacity(0.5), size: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showFullFooter(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.55,
+          minChildSize: 0.3,
+          maxChildSize: 0.85,
+          builder: (_, controller) {
+            final isMobile =
+                MediaQuery.of(context).size.width < 850;
+            return Container(
+              decoration: const BoxDecoration(
+                color: backgroundDark,
+                borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 24 : 60, vertical: 24),
+              child: SingleChildScrollView(
+                controller: controller,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Drag handle
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 4,
+                        margin: const EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.25),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                    // Brand
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset("assets/images/logo.svg",
+                            height: 36, width: 36, fit: BoxFit.contain),
+                        const SizedBox(width: 10),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Regisse",
+                                style: headlineSecondaryTextStyle.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white),
+                              ),
+                              TextSpan(
+                                text: "__",
+                                style: headlineSecondaryTextStyle.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: primary),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Transformez vos idées en solutions digitales.",
+                      style: bodyTextStyle.copyWith(
+                        fontSize: 13,
+                        color: Colors.white.withOpacity(0.55),
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    // Social
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () =>
+                              openUrl("https://www.youtube.com/@regisse"),
+                          borderRadius: BorderRadius.circular(6),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: Image.asset(
+                              "assets/images/icon_youtube_64x.png",
+                              height: 24,
+                              width: 24,
+                              color: Colors.white.withOpacity(0.6),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 28),
+                    // Quick links
+                    Text(
+                      "LIENS UTILES",
+                      style: bodyTextStyle.copyWith(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: primary,
+                        letterSpacing: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _SheetLink(label: "Services", onTap: () => Navigator.pop(ctx)),
+                    const SizedBox(height: 8),
+                    _SheetLink(
+                        label: "Conditions Générales d'Utilisation",
+                        onTap: () => Navigator.pop(ctx)),
+                    _SheetLink(label: "Sécurité", onTap: () => Navigator.pop(ctx)),
+                    const SizedBox(height: 8),
+                    _SheetLink(
+                        label: "Confidentialité",
+                        onTap: () => Navigator.pop(ctx)),
+                    const SizedBox(height: 28),
+                    // Contact
+                    Text(
+                      "CONTACT",
+                      style: bodyTextStyle.copyWith(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: primary,
+                        letterSpacing: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      "Berlin · Paris · Télétravail",
+                      style: bodyTextStyle.copyWith(
+                        fontSize: 13,
+                        color: Colors.white.withOpacity(0.65),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    InkWell(
+                      onTap: () => openUrl("mailto:contact@regisse.de"),
+                      child: Text(
+                        "contact@regisse.de",
+                        style: bodyTextStyle.copyWith(
+                          fontSize: 13,
+                          color: primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: primary,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    Divider(
+                        color: Colors.white.withOpacity(0.10), thickness: 1),
+                    const SizedBox(height: 12),
+                    Text(
+                      "© ${DateTime.now().year} Regisse__ GmbH. Tous droits réservés.",
+                      style: bodyTextStyle.copyWith(
+                        fontSize: 12,
+                        color: Colors.white.withOpacity(0.40),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _SheetLink extends StatelessWidget {
+  const _SheetLink({required this.label, required this.onTap});
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(4),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Text(
+          label,
+          style: bodyTextStyle.copyWith(
+            fontSize: 13,
+            color: Colors.white.withOpacity(0.65),
+          ),
         ),
       ),
     );
