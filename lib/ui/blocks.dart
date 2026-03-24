@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
+import 'package:flutter_website/pages/travel_page.dart';
+import 'package:flutter_website/pages/immobilier_page.dart';
+import 'package:flutter_website/pages/loisir_page.dart';
 import 'package:flutter_website/utils/utils.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:universal_io/io.dart';
@@ -239,7 +242,12 @@ class WebsiteMenuBar extends StatelessWidget {
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                onTap: () => {}, // openUrl("https://flutter.dev/docs"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const TravelPage()),
+                  );
+                },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text("Travel",
@@ -257,7 +265,12 @@ class WebsiteMenuBar extends StatelessWidget {
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                onTap: () => {}, //openUrl("https://flutter.dev/showcase"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ImmobilierPage()),
+                  );
+                },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text("Immobilier",
@@ -275,7 +288,12 @@ class WebsiteMenuBar extends StatelessWidget {
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                onTap: () => {}, //openUrl("https://flutter.dev/community"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoisirPage()),
+                  );
+                },
                 child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text("Loisir",

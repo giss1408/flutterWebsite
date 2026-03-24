@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_website/components/colors.dart';
 import 'package:flutter_website/config/environment.dart';
-import 'package:flutter_website/config/themes.dart';
+import 'package:flutter_website/config/modern_theme_builder.dart';
 import 'package:flutter_website/providers/theme_provider.dart';
 import 'package:flutter_website/services/analytics_service.dart';
 import 'package:flutter_website/services/error_handler.dart';
@@ -11,24 +11,39 @@ import 'package:flutter_website/ui/carousel/carousel.dart';
 import 'package:flutter_website/ui/blocks.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-void main() {
-  // Setup global error handler for production
-  ErrorHandler.setupGlobalErrorHandler();
-
-  // Log app initialization
-  AnalyticsService().trackEvent('app_initialized', parameters: {
-    'version': AppConfig.appVersion,
-    'environment': AppConfig.isDevelopment ? 'development' : 'production',
-  });
+void main() async {
+  // Minimal startup - defer non-critical initialization
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize critical services only
+  final themeProvider = ThemeProvider()..initializeTheme();
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()..initializeTheme()),
+        ChangeNotifierProvider(create: (_) => themeProvider),
       ],
       child: const MyApp(),
     ),
   );
+
+  // Defer non-critical initialization to first frame
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    try {
+      // Setup error handler asynchronously
+      ErrorHandler.setupGlobalErrorHandler();
+
+      // Track app initialization
+      AnalyticsService().trackEvent('app_initialized', parameters: {
+        'version': AppConfig.appVersion,
+        'environment': AppConfig.isDevelopment ? 'development' : 'production',
+      });
+    } catch (e) {
+      if (AppConfig.isDevelopment) {
+        print('Deferred initialization error: $e');
+      }
+    }
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -40,8 +55,8 @@ class MyApp extends StatelessWidget {
       builder: (context, themeProvider, _) {
         return MaterialApp(
           title: 'Flutter.dev',
-          theme: AppThemes.lightTheme,
-          darkTheme: AppThemes.darkTheme,
+          theme: ModernThemeBuilder.buildLightTheme(),
+          darkTheme: ModernThemeBuilder.buildDarkTheme(),
           themeMode: themeProvider.themeMode,
           debugShowCheckedModeBanner: AppConfig.isDevelopment,
           builder: (context, widget) => ResponsiveBreakpoints.builder(
