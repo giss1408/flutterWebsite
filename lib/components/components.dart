@@ -11,3 +11,7 @@ export 'modern_spacing.dart';
 export 'modern_shadows.dart';
 export 'modern_components.dart';
 export 'modern_animations.dart';
+
+// New feature components
+export 'contact_form_widget.dart';
+export 'floating_whatsapp_button.dart';

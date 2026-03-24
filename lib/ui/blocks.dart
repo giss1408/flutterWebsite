@@ -6,7 +6,9 @@ import 'package:flutter_website/components/components.dart';
 import 'package:flutter_website/pages/travel_page.dart';
 import 'package:flutter_website/pages/immobilier_page.dart';
 import 'package:flutter_website/pages/loisir_page.dart';
+import 'package:flutter_website/providers/theme_provider.dart';
 import 'package:flutter_website/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:universal_io/io.dart';
 import 'package:video_player/video_player.dart';
@@ -415,6 +417,27 @@ class WebsiteMenuBar extends StatelessWidget {
               ),
             ),
           ),*/
+          // Dark mode toggle button
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Consumer<ThemeProvider>(
+              builder: (context, themeProvider, _) {
+                return GestureDetector(
+                  onTap: () => themeProvider.toggleTheme(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Icon(
+                      themeProvider.isDarkMode
+                          ? Icons.light_mode
+                          : Icons.dark_mode,
+                      color: navLinkColor,
+                      size: 24,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

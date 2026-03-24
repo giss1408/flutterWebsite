@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_website/components/colors.dart';
 import 'package:flutter_website/config/environment.dart';
 import 'package:flutter_website/config/modern_theme_builder.dart';
 import 'package:flutter_website/providers/theme_provider.dart';
 import 'package:flutter_website/services/analytics_service.dart';
 import 'package:flutter_website/services/error_handler.dart';
+import 'package:flutter_website/components/floating_whatsapp_button.dart';
 import 'package:flutter_website/ui/block_wrapper.dart';
 import 'package:flutter_website/ui/carousel/carousel.dart';
 import 'package:flutter_website/ui/blocks.dart';
@@ -133,7 +133,7 @@ class _HomePageState extends State<_HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 66),
         child: Builder(
@@ -142,10 +142,17 @@ class _HomePageState extends State<_HomePage> {
           ),
         ),
       ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: blocks.length,
-        itemBuilder: (context, index) => blocks[index],
+      body: Stack(
+        children: [
+          ListView.builder(
+            controller: _scrollController,
+            itemCount: blocks.length,
+            itemBuilder: (context, index) => blocks[index],
+          ),
+          const FloatingWhatsAppButton(
+            templateKey: 'general',
+          ),
+        ],
       ),
       bottomNavigationBar: _menuOpen ? null : const CompactFooterBanner(),
       // Floating action button for scroll to top
