@@ -1,38 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
-
+  <!-- Charset and Viewport -->
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <!-- Note: Flutter Web provides its own viewport configuration -->
+  
+  <!-- Base href for routing -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Flutter website rebuilt with modern 2026 design patterns, optimized performance, and smart features.">
+  <meta name="keywords" content="Flutter, web development, framework, cross-platform">
+  <meta name="author" content="Flutter Team">
+  <meta name="theme-color" content="#1389FD">
+  
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://flutter.dev/">
+  <meta property="og:title" content="Flutter.dev - Build Beautiful Apps">
+  <meta property="og:description" content="Flutter website rebuilt with modern 2026 design patterns, optimized performance, and smart features.">
+  <meta property="og:image" content="icons/Icon-192.png">
+  
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://flutter.dev/">
+  <meta property="twitter:title" content="Flutter.dev - Build Beautiful Apps">
+  <meta property="twitter:description" content="Flutter website rebuilt with modern 2026 design patterns, optimized performance, and smart features.">
+  <meta property="twitter:image" content="icons/Icon-192.png">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Flutter.dev">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-startup-image" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>Flutter.dev</title>
+  <!-- Favicon & Icons -->
+  <link rel="icon" type="image/png" href="favicon.png" sizes="192x192"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="mask-icon" href="favicon.svg" color="#1389FD">
+  
+  <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
+  
+  <!-- Security Headers -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https: wss:; object-src 'none';">
+  
+  <!-- Preconnect to improve loading performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.gstatic.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  
+  <!-- Prefetch DNS for external resources -->
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preload" as="script" href="flutter_bootstrap.js">
+  <link rel="preload" as="fetch" href="https://www.gstatic.com/flutter-canvaskit/a6bd3f1de158bb61090e0c8053df93a10cb548e1/chromium/canvaskit.js" crossorigin>
+  
+  <!-- Page Title -->
+  <title>Flutter.dev - Build Beautiful Apps</title>
+
+  <!-- Dark Mode Support -->
+  <script>
+    // Detect system dark mode preference and apply early to prevent flash
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    
+    // Listen for theme changes
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      });
+    }
+  </script>
+
+  <!-- Performance Optimizations -->
+  <style>
+    /* Critical CSS - Prevent layout shift */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      background-color: #F9FAFB;
+      color: #1E293B;
+    }
+    
+    html[data-theme="dark"] {
+      background-color: #0F172A;
+      color: #F1F5F9;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Loading placeholder */
+    #app {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .flutter-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      width: 100%;
+      background: linear-gradient(135deg, #F9FAFB 0%, #EFF8FF 100%);
+    }
+    
+    .flutter-loading {
+      text-align: center;
+      font-size: 18px;
+      color: #64748B;
+      font-weight: 500;
+    }
+    
+    /* Smooth transitions */
+    @media (prefers-reduced-motion: no-preference) {
+      html {
+        scroll-behavior: smooth;
+      }
+    }
+  </style>
 </head>
 <body>
+  <!-- Flutter Container -->
+  <div id="app">
+    <div class="flutter-container">
+      <div class="flutter-loading">Loading incredible content...</div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Flutter app -->
   <script src="flutter_bootstrap.js" async></script>
+
+  <!-- Analytics and Performance Monitoring -->
+  <script>
+    // Track Core Web Vitals
+    if ('web-vital' in window) {
+      const vitals = {
+        lcp: 0,
+        fid: 0,
+        cls: 0
+      };
+      
+      // Log when page becomes interactive
+      window.addEventListener('load', () => {
+        console.log('📊 Page fully loaded');
+      });
+    }
+    
+    // Service Worker is automatically registered by flutter_bootstrap.js
+    // No manual registration needed - Flutter handles PWA initialization
+  </script>
 </body>
 </html>

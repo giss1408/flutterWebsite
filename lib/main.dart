@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_website/components/colors.dart';
+import 'package:flutter_website/config/environment.dart';
+import 'package:flutter_website/config/themes.dart';
+import 'package:flutter_website/providers/theme_provider.dart';
+import 'package:flutter_website/services/analytics_service.dart';
+import 'package:flutter_website/services/error_handler.dart';
 import 'package:flutter_website/ui/block_wrapper.dart';
 import 'package:flutter_website/ui/carousel/carousel.dart';
+import 'package:flutter_website/ui/blocks.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import 'ui/blocks.dart';
-
 void main() {
-  runApp(const MyApp());
+  // Setup global error handler for production
+  ErrorHandler.setupGlobalErrorHandler();
+
+  // Log app initialization
+  AnalyticsService().trackEvent('app_initialized', parameters: {
+    'version': AppConfig.appVersion,
+    'environment': AppConfig.isDevelopment ? 'development' : 'production',
+  });
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()..initializeTheme()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,26 +36,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      builder: (context, widget) => ResponsiveBreakpoints.builder(
-        child: Builder(builder: (context) {
-          return ResponsiveScaledBox(
-              width: ResponsiveValue<double?>(context,
-                  defaultValue: null,
-                  conditionalValues: [
-                    const Condition.equals(name: 'MOBILE_SMALL', value: 480),
-                  ]).value,
-              child: ClampingScrollWrapper.builder(context, widget!));
-        }),
-        breakpoints: [
-          const Breakpoint(start: 0, end: 480, name: 'MOBILE_SMALL'),
-          const Breakpoint(start: 481, end: 850, name: MOBILE),
-          const Breakpoint(start: 850, end: 1080, name: TABLET),
-          const Breakpoint(start: 1081, end: double.infinity, name: DESKTOP),
-        ],
-      ),
-      home: const _HomePage(),
-      debugShowCheckedModeBanner: false,
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, _) {
+        return MaterialApp(
+          title: 'Flutter.dev',
+          theme: AppThemes.lightTheme,
+          darkTheme: AppThemes.darkTheme,
+          themeMode: themeProvider.themeMode,
+          debugShowCheckedModeBanner: AppConfig.isDevelopment,
+          builder: (context, widget) => ResponsiveBreakpoints.builder(
+            child: Builder(builder: (context) {
+              return ResponsiveScaledBox(
+                width: ResponsiveValue<double?>(context,
+                    defaultValue: null,
+                    conditionalValues: [
+                      const Condition.equals(name: 'MOBILE_SMALL', value: 480),
+                    ]).value,
+                child: ClampingScrollWrapper.builder(context, widget!),
+              );
+            }),
+            breakpoints: [
+              const Breakpoint(start: 0, end: 480, name: 'MOBILE_SMALL'),
+              const Breakpoint(start: 481, end: 850, name: MOBILE),
+              const Breakpoint(start: 850, end: 1080, name: TABLET),
+              const Breakpoint(start: 1081, end: double.infinity, name: DESKTOP),
+            ],
+          ),
+          home: const _HomePage(),
+        );
+      },
     );
   }
 }
@@ -47,13 +77,41 @@ class _HomePage extends StatefulWidget {
 
 class _HomePageState extends State<_HomePage> {
   bool _menuOpen = false;
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    
+    // Track page view
+    AnalyticsService().trackPageView('home');
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   void _openMenu(BuildContext ctx) {
     final future = WebsiteMenuBar.showMenu(ctx);
     if (mounted) setState(() => _menuOpen = true);
     future.then(
-      (_) { if (mounted) setState(() => _menuOpen = false); },
-      onError: (_) { if (mounted) setState(() => _menuOpen = false); },
+      (_) {
+        if (mounted) setState(() => _menuOpen = false);
+      },
+      onError: (_) {
+        if (mounted) setState(() => _menuOpen = false);
+      },
+    );
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
     );
   }
 
@@ -63,8 +121,6 @@ class _HomePageState extends State<_HomePage> {
       backgroundColor: background,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 66),
-        // Builder gives us a context that sits inside the Scaffold (has a
-        // Scaffold ancestor) so showModalBottomSheet works correctly.
         child: Builder(
           builder: (scaffoldCtx) => WebsiteMenuBar(
             onMenuPressed: () => _openMenu(scaffoldCtx),
@@ -72,12 +128,35 @@ class _HomePageState extends State<_HomePage> {
         ),
       ),
       body: ListView.builder(
+        controller: _scrollController,
         itemCount: blocks.length,
         itemBuilder: (context, index) => blocks[index],
       ),
-      // Sticky footer banner — hides when the menu sheet is open.
-      bottomNavigationBar:
-          _menuOpen ? null : const CompactFooterBanner(),
+      bottomNavigationBar: _menuOpen ? null : const CompactFooterBanner(),
+      // Floating action button for scroll to top
+      floatingActionButton: _buildFloatingActionButton(),
+    );
+  }
+
+  Widget? _buildFloatingActionButton() {
+    return StreamBuilder(
+      stream: _scrollController.positions.isNotEmpty
+          ? Stream.periodic(const Duration(milliseconds: 500))
+          : null,
+      builder: (context, snapshot) {
+        final showFab = _scrollController.hasClients &&
+            _scrollController.offset > 300;
+
+        if (!showFab) {
+          return const SizedBox.shrink();
+        }
+
+        return FloatingActionButton(
+          onPressed: _scrollToTop,
+          tooltip: 'Back to top',
+          child: const Icon(Icons.arrow_upward),
+        );
+      },
     );
   }
 }
