@@ -9,6 +9,11 @@ import 'package:flutter_website/components/floating_whatsapp_button.dart';
 import 'package:flutter_website/ui/block_wrapper.dart';
 import 'package:flutter_website/ui/carousel/carousel.dart';
 import 'package:flutter_website/ui/blocks.dart';
+import 'package:flutter_website/pages/travel_page.dart';
+import 'package:flutter_website/pages/immobilier_page.dart';
+import 'package:flutter_website/pages/loisir_page.dart';
+import 'package:flutter_website/pages/tourism_page.dart';
+import 'package:flutter_website/pages/analytics_dashboard_page.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
@@ -54,7 +59,7 @@ class MyApp extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, _) {
         return MaterialApp(
-          title: 'Flutter.dev',
+          title: 'Regisse__ #Business Solutions — SaaS, Design & Développement Sur Mesure',
           theme: ModernThemeBuilder.buildLightTheme(),
           darkTheme: ModernThemeBuilder.buildDarkTheme(),
           themeMode: themeProvider.themeMode,
@@ -77,7 +82,15 @@ class MyApp extends StatelessWidget {
               const Breakpoint(start: 1081, end: double.infinity, name: DESKTOP),
             ],
           ),
-          home: const _HomePage(),
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const _HomePage(),
+            '/travel': (context) => const TravelPage(),
+            '/immobilier': (context) => const ImmobilierPage(),
+            '/loisir': (context) => const LoisirPage(),
+            '/tourism': (context) => const TourismPage(),
+            '/analytics': (context) => const AnalyticsDashboardPage(),
+          },
         );
       },
     );

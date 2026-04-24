@@ -31,9 +31,9 @@ class AppConfig {
   static String get apiBaseUrl {
     switch (_currentEnvironment) {
       case Environment.production:
-        return 'https://api.flutter.dev';
+        return 'https://regisse.de/api';
       case Environment.staging:
-        return 'https://staging-api.flutter.dev';
+        return 'https://staging.regisse.de/api';
       case Environment.development:
         return 'http://localhost:8080';
     }
@@ -53,4 +53,10 @@ class AppConfig {
         'advancedAnalyticsEnabled': !isDevelopment,
         'performanceMonitoringEnabled': !isDevelopment,
       };
+
+  /// Business info
+  static const String companyName = 'Regisse__ GmbH';
+  static const String companyEmail = 'contact@regisse.de';
+  static const String companyWebsite = 'https://regisse.de';
+  static const String youtubeChannel = 'https://www.youtube.com/@regisse';
 }

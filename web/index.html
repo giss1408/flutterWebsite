@@ -1,38 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <!-- Charset and Viewport -->
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <!-- Note: Flutter Web provides its own viewport configuration -->
   
   <!-- Base href for routing -->
   <base href="$FLUTTER_BASE_HREF">
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Flutter website rebuilt with modern 2026 design patterns, optimized performance, and smart features.">
-  <meta name="keywords" content="Flutter, web development, framework, cross-platform">
-  <meta name="author" content="Flutter Team">
+  <meta name="description" content="Regisse__ #Business Solutions — Société tech franco-allemande spécialisée dans le développement de plateformes SaaS sur mesure, design UI/UX et solutions digitales performantes.">
+  <meta name="keywords" content="Regisse, business solutions, SaaS, développement web, application sur mesure, France, Allemagne, Côte d'Ivoire, plateforme digitale">
+  <meta name="author" content="Regisse__ GmbH">
   <meta name="theme-color" content="#1389FD">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="fr">
+  <meta name="revisit-after" content="7 days">
   
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://flutter.dev/">
-  <meta property="og:title" content="Flutter.dev - Build Beautiful Apps">
-  <meta property="og:description" content="Flutter website rebuilt with modern 2026 design patterns, optimized performance, and smart features.">
-  <meta property="og:image" content="icons/Icon-192.png">
+  <meta property="og:url" content="https://regisse.de/">
+  <meta property="og:title" content="Regisse__ #Business Solutions — SaaS, Design & Développement Sur Mesure">
+  <meta property="og:description" content="De la conception au déploiement en quelques semaines — des plateformes SaaS sécurisées, scalables et taillées pour accélérer votre croissance.">
+  <meta property="og:image" content="icons/Icon-512.png">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Regisse__">
   
   <!-- Twitter Card -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://flutter.dev/">
-  <meta property="twitter:title" content="Flutter.dev - Build Beautiful Apps">
-  <meta property="twitter:description" content="Flutter website rebuilt with modern 2026 design patterns, optimized performance, and smart features.">
-  <meta property="twitter:image" content="icons/Icon-192.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://regisse.de/">
+  <meta name="twitter:title" content="Regisse__ #Business Solutions — SaaS, Design & Développement Sur Mesure">
+  <meta name="twitter:description" content="De la conception au déploiement en quelques semaines — des plateformes SaaS sécurisées, scalables et taillées pour accélérer votre croissance.">
+  <meta name="twitter:image" content="icons/Icon-512.png">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Flutter.dev">
+  <meta name="apple-mobile-web-app-title" content="Regisse__">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="apple-touch-startup-image" href="icons/Icon-192.png">
 
@@ -60,10 +64,9 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" as="script" href="flutter_bootstrap.js">
-  <link rel="preload" as="fetch" href="https://www.gstatic.com/flutter-canvaskit/a6bd3f1de158bb61090e0c8053df93a10cb548e1/chromium/canvaskit.js" crossorigin>
   
   <!-- Page Title -->
-  <title>Flutter.dev - Build Beautiful Apps</title>
+  <title>Regisse__ #Business Solutions — SaaS, Design & Développement Sur Mesure</title>
 
   <!-- Dark Mode Support -->
   <script>
@@ -140,36 +143,50 @@
       }
     }
   </style>
+  <!-- Structured Data / JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Regisse__",
+    "url": "https://regisse.de",
+    "logo": "https://regisse.de/favicon.png",
+    "description": "Société tech franco-allemande spécialisée dans le développement de plateformes SaaS sur mesure.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Berlin",
+      "addressCountry": "DE"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "contact@regisse.de",
+      "contactType": "sales"
+    },
+    "sameAs": [
+      "https://www.youtube.com/@regisse"
+    ]
+  }
+  </script>
 </head>
 <body>
   <!-- Flutter Container -->
   <div id="app">
     <div class="flutter-container">
-      <div class="flutter-loading">Loading incredible content...</div>
+      <div class="flutter-loading">Chargement...</div>
     </div>
   </div>
 
   <!-- Bootstrap Flutter app -->
   <script src="flutter_bootstrap.js" async></script>
 
-  <!-- Analytics and Performance Monitoring -->
+  <!-- Performance Monitoring -->
   <script>
     // Track Core Web Vitals
     if ('web-vital' in window) {
-      const vitals = {
-        lcp: 0,
-        fid: 0,
-        cls: 0
-      };
-      
-      // Log when page becomes interactive
       window.addEventListener('load', () => {
-        console.log('📊 Page fully loaded');
+        console.log('📊 Regisse__ app loaded');
       });
     }
-    
-    // Service Worker is automatically registered by flutter_bootstrap.js
-    // No manual registration needed - Flutter handles PWA initialization
   </script>
 </body>
 </html>

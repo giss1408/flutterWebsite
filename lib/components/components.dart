@@ -15,3 +15,8 @@ export 'modern_animations.dart';
 // New feature components
 export 'contact_form_widget.dart';
 export 'floating_whatsapp_button.dart';
+
+// Tourism components
+export 'tour_tier_card.dart';
+export 'itinerary_section.dart';
+export 'highlights_grid.dart';

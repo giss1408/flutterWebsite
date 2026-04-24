@@ -1,13 +1,14 @@
 {
-    "name": "Flutter.dev",
-    "short_name": "Flutter.dev",
+    "name": "Regisse__ #Business Solutions",
+    "short_name": "Regisse__",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F8FAFC",
+    "theme_color": "#1389FD",
+    "description": "Société tech franco-allemande spécialisée dans le développement de plateformes SaaS sur mesure, design UI/UX et solutions digitales performantes.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "categories": ["business", "technology", "development"],
     "icons": [
         {
             "src": "icons/Icon-192.png",

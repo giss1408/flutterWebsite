@@ -3,8 +3,9 @@ import 'package:flutter_website/config/environment.dart';
 
 /// WhatsApp integration service for messaging
 class WhatsAppService {
-  // WhatsApp business number (change to your number)
-  static const String businessPhone = '+212612345678'; // Replace with actual number
+  // WhatsApp business number — Côte d'Ivoire number
+  // ⚠️ REMPLACEZ CE NUMÉRO par votre numéro WhatsApp Business
+  static const String businessPhone = '+2250102030405'; // Replace with actual number
   
   // Default message templates
   static const String defaultMessage = 'Bonjour, j\'aimerais en savoir plus sur vos services.';

@@ -3,9 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
+import 'package:flutter_website/services/whatsapp_service.dart';
 import 'package:flutter_website/pages/travel_page.dart';
 import 'package:flutter_website/pages/immobilier_page.dart';
 import 'package:flutter_website/pages/loisir_page.dart';
+import 'package:flutter_website/pages/tourism_page.dart';
 import 'package:flutter_website/providers/theme_provider.dart';
 import 'package:flutter_website/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +41,14 @@ class WebsiteMenuBar extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
+        // Route mapping for menu items
+        final routeMap = {
+          'Accueil': '/',
+          'Services': '/',
+          'Réalisations': '/travel',
+          'Blog': '/',
+          'Contact': '/travel',
+        };
         return Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
           child: Container(
@@ -78,7 +88,9 @@ class WebsiteMenuBar extends StatelessWidget {
                     ),
                     onTap: () {
                       Navigator.pop(ctx);
-                      // Scroll-to-section or route navigation can be wired here.
+                      final label = menuItems[index]['label'] as String;
+                      final route = routeMap[label] ?? '/';
+                      Navigator.pushNamed(context, route);
                     },
                   );
                 }),
@@ -89,6 +101,10 @@ class WebsiteMenuBar extends StatelessWidget {
                   child: TextButton(
                     onPressed: () {
                       Navigator.pop(ctx);
+                      WhatsAppService.openWhatsApp(
+                        message:
+                            'Bonjour, j\'aimerais discuter de mon projet digital avec Regisse__. Pouvez-vous m\'aider?',
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all<Color>(primary),
@@ -270,6 +286,29 @@ class WebsiteMenuBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
+                    MaterialPageRoute(builder: (_) => const TourismPage()),
+                  );
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text("Tours Côte d'Ivoire",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: navLinkColor,
+                          fontFamily: fontFamily)),
+                ),
+              ),
+            ),
+          ),
+          ResponsiveVisibility(
+            visible: false,
+            visibleConditions: const [Condition.largerThan(name: MOBILE)],
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
                     MaterialPageRoute(builder: (_) => const ImmobilierPage()),
                   );
                 },
@@ -336,7 +375,7 @@ class WebsiteMenuBar extends StatelessWidget {
           MouseRegion(
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
-              onTap: () => {}, //openUrl('https://www.youtube.com/flutterdev'),
+              onTap: () => openUrl('https://www.youtube.com/@regisse'),
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: ImageIcon(
@@ -601,7 +640,9 @@ class GetStarted extends StatelessWidget {
                 children: [
                   ResponsiveRowColumnItem(
                     child: TextButton(
-                      onPressed: () => {},
+                      onPressed: () => WhatsAppService.openWhatsApp(
+                        message: 'Bonjour, j\'aimerais discuter de mon projet digital avec Regisse__. Pouvez-vous m\'aider?',
+                      ),
                       style: ButtonStyle(
                           backgroundColor:
                               WidgetStateProperty.all<Color>(primary),
@@ -651,7 +692,8 @@ class GetStarted extends StatelessWidget {
                   ),
                   ResponsiveRowColumnItem(
                     child: TextButton(
-                      onPressed: () => {},
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/travel'),
                       style: TextButton.styleFrom(
                         shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -1464,7 +1506,7 @@ class _LearnFromDevelopersState extends State<LearnFromDevelopers> {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () =>
-                        openUrl("https://www.youtube.com/flutterdev"),
+                        openUrl("https://www.youtube.com/@regisse"),
                     child: MouseRegion(
                       cursor: SystemMouseCursors.click,
                       child: Row(
@@ -1985,7 +2027,9 @@ class InstallFlutter extends StatelessWidget {
                 children: [
                   ResponsiveRowColumnItem(
                     child: TextButton(
-                      onPressed: () => {},
+                      onPressed: () => WhatsAppService.openWhatsApp(
+                        message: 'Bonjour, j\'aimerais prendre rendez-vous avec Regisse__ pour discuter de mon projet digital.',
+                      ),
                       style: ButtonStyle(
                           backgroundColor:
                               WidgetStateProperty.all<Color>(primary),
@@ -2035,7 +2079,8 @@ class InstallFlutter extends StatelessWidget {
                   ),
                   ResponsiveRowColumnItem(
                     child: TextButton(
-                      onPressed: () => {},
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/travel'),
                       style: TextButton.styleFrom(
                         shape: const RoundedRectangleBorder(
                             borderRadius:
