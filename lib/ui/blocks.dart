@@ -9,6 +9,7 @@ import 'package:flutter_website/pages/immobilier_page.dart';
 import 'package:flutter_website/pages/loisir_page.dart';
 import 'package:flutter_website/pages/tourism_page.dart';
 import 'package:flutter_website/providers/theme_provider.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
 import 'package:flutter_website/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -25,12 +26,14 @@ class WebsiteMenuBar extends StatelessWidget {
   /// Opens a navigation bottom-sheet menu. Ported from flutter_web's NavBar.
   /// Returns a Future that completes when the sheet is dismissed.
   static Future<void> showMenu(BuildContext context) {
-    const menuItems = [
-      {'label': 'Accueil', 'icon': Icons.home},
-      {'label': 'Services', 'icon': Icons.business_center},
-      {'label': 'Réalisations', 'icon': Icons.workspace_premium},
-      {'label': 'Blog', 'icon': Icons.article},
-      {'label': 'Contact', 'icon': Icons.contact_mail},
+    // Use read with listen: false for static method that's called from event handler
+    final localeProvider = context.read<LocaleProvider>();
+    final menuItems = [
+      {'label': localeProvider.tr('menu.home'), 'icon': Icons.home},
+      {'label': localeProvider.tr('menu.services'), 'icon': Icons.business_center},
+      {'label': localeProvider.tr('menu.portfolio'), 'icon': Icons.workspace_premium},
+      {'label': localeProvider.tr('menu.blog'), 'icon': Icons.article},
+      {'label': localeProvider.tr('menu.contact'), 'icon': Icons.contact_mail},
     ];
 
     return showModalBottomSheet(
@@ -43,11 +46,11 @@ class WebsiteMenuBar extends StatelessWidget {
       builder: (ctx) {
         // Route mapping for menu items
         final routeMap = {
-          'Accueil': '/',
-          'Services': '/',
-          'Réalisations': '/travel',
-          'Blog': '/',
-          'Contact': '/travel',
+          localeProvider.tr('menu.home'): '/',
+          localeProvider.tr('menu.services'): '/',
+          localeProvider.tr('menu.portfolio'): '/travel',
+          localeProvider.tr('menu.blog'): '/',
+          localeProvider.tr('menu.contact'): '/travel',
         };
         return Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
@@ -61,7 +64,7 @@ class WebsiteMenuBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Menu',
+                      localeProvider.tr('menu.title'),
                       style: headlineSecondaryTextStyle.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
@@ -103,7 +106,7 @@ class WebsiteMenuBar extends StatelessWidget {
                       Navigator.pop(ctx);
                       WhatsAppService.openWhatsApp(
                         message:
-                            'Bonjour, j\'aimerais discuter de mon projet digital avec Regisse__. Pouvez-vous m\'aider?',
+                            localeProvider.tr('wa.project'),
                       );
                     },
                     style: ButtonStyle(
@@ -133,6 +136,7 @@ class WebsiteMenuBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     const Color navLinkColor = Color(0xFF6E7274);
     return Container(
       height: 66,
@@ -477,6 +481,11 @@ class WebsiteMenuBar extends StatelessWidget {
               },
             ),
           ),
+          // Language Switcher
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: LanguageSwitcherMenu(),
+          ),
         ],
       ),
     );
@@ -488,6 +497,7 @@ class GetStarted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -594,34 +604,30 @@ class GetStarted extends StatelessWidget {
                   text: TextSpan(
                     style: bodyTextStyle.copyWith(fontSize: 16, height: 1.8),
                     children: [
-                      const TextSpan(
-                          text: "Regisse__ #Business Solutions est une "),
                       TextSpan(
-                          text: "société tech franco-allemande",
+                          text: localeProvider.tr('gs.body_intro')),
+                      TextSpan(
+                          text: localeProvider.tr('gs.body_highlight'),
                           style: bodyTextStyle.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: primary)),
-                      const TextSpan(
-                          text:
-                              " spécialisée dans le développement de plateformes "),
                       TextSpan(
-                          text: "SaaS sur mesure",
+                          text: localeProvider.tr('gs.body_mid')),
+                      TextSpan(
+                          text: localeProvider.tr('gs.body_highlight2'),
                           style: bodyTextStyle.copyWith(
                               fontSize: 16, color: primary)),
-                      const TextSpan(
-                          text:
-                              ". Nous combinons ingénierie de pointe, design "
-                              "intuitif et compréhension métier pour vous "
-                              "livrer des produits "),
                       TextSpan(
-                          text: "simples, sécurisés et rapidement déployés",
+                          text: localeProvider.tr('gs.body_mid2')),
+                      TextSpan(
+                          text: localeProvider.tr('gs.body_highlight3'),
                           style: bodyTextStyle.copyWith(
                               fontSize: 16,
                               fontStyle: FontStyle.italic,
                               color: primary)),
-                      const TextSpan(
-                          text: " — quel que soit votre secteur d'activité."),
+                      TextSpan(
+                          text: localeProvider.tr('gs.body_end')),
                     ],
                   ),
                   textAlign: TextAlign.center,
@@ -641,7 +647,7 @@ class GetStarted extends StatelessWidget {
                   ResponsiveRowColumnItem(
                     child: TextButton(
                       onPressed: () => WhatsAppService.openWhatsApp(
-                        message: 'Bonjour, j\'aimerais discuter de mon projet digital avec Regisse__. Pouvez-vous m\'aider?',
+                        message: localeProvider.tr('wa.project'),
                       ),
                       style: ButtonStyle(
                           backgroundColor:
@@ -783,6 +789,7 @@ class Features extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     final bool isDesktop =
         !ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
 
@@ -1563,6 +1570,7 @@ class WhoUsesFlutter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -1962,6 +1970,7 @@ class InstallFlutter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -2028,7 +2037,7 @@ class InstallFlutter extends StatelessWidget {
                   ResponsiveRowColumnItem(
                     child: TextButton(
                       onPressed: () => WhatsAppService.openWhatsApp(
-                        message: 'Bonjour, j\'aimerais prendre rendez-vous avec Regisse__ pour discuter de mon projet digital.',
+                        message: localeProvider.tr('wa.appointment'),
                       ),
                       style: ButtonStyle(
                           backgroundColor:
@@ -2125,6 +2134,7 @@ class StatsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
     return Container(
       width: double.infinity,
@@ -2194,6 +2204,7 @@ class ServicesShowcase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     return MaxWidthBox(
       maxWidth: 1200,
       child: Column(
@@ -2568,6 +2579,7 @@ class Testimonials extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     final isDesktop = !ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
     return Container(
       width: double.infinity,
@@ -2742,6 +2754,210 @@ class _TestimonialCard extends StatelessWidget {
               ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class DigitalSolutionsAfrica extends StatelessWidget {
+  const DigitalSolutionsAfrica({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
+    final isMobile = MediaQuery.of(context).size.width < 850;
+
+    return Column(
+      children: [
+        // Badge
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: primary.withOpacity(0.3)),
+          ),
+          child: Text(
+            localeProvider.tr('dsa.badge'),
+            style: bodyTextStyle.copyWith(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: primary,
+              letterSpacing: 1.2,
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        // Title
+        Text(
+          localeProvider.tr('dsa.title'),
+          style: headlineSecondaryTextStyle.copyWith(
+            fontSize: isMobile ? 28 : 40,
+            fontWeight: FontWeight.w700,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        // Subtitle
+        SizedBox(
+          width: isMobile ? null : 600,
+          child: Text(
+            localeProvider.tr('dsa.subtitle'),
+            style: bodyTextStyle.copyWith(
+              fontSize: 16,
+              color: Colors.black54,
+              height: 1.6,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 48),
+        // Cards
+        ResponsiveRowColumn(
+          layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
+          children: [
+            ResponsiveRowColumnItem(
+              rowFlex: 1,
+              child: _DSACard(
+                category: localeProvider.tr('dsa.card1_category'),
+                title: localeProvider.tr('dsa.card1_title'),
+                description: localeProvider.tr('dsa.card1_desc'),
+                features: [
+                  localeProvider.tr('dsa.card1_feat1'),
+                  localeProvider.tr('dsa.card1_feat2'),
+                  localeProvider.tr('dsa.card1_feat3'),
+                ],
+              ),
+            ),
+            ResponsiveRowColumnItem(
+              rowFlex: 1,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : 16),
+                child: _DSACard(
+                  category: localeProvider.tr('dsa.card2_category'),
+                  title: localeProvider.tr('dsa.card2_title'),
+                  description: localeProvider.tr('dsa.card2_desc'),
+                  features: [
+                    localeProvider.tr('dsa.card2_feat1'),
+                    localeProvider.tr('dsa.card2_feat2'),
+                    localeProvider.tr('dsa.card2_feat3'),
+                  ],
+                ),
+              ),
+            ),
+            ResponsiveRowColumnItem(
+              rowFlex: 1,
+              child: _DSACard(
+                category: localeProvider.tr('dsa.card3_category'),
+                title: localeProvider.tr('dsa.card3_title'),
+                description: localeProvider.tr('dsa.card3_desc'),
+                features: [
+                  localeProvider.tr('dsa.card3_feat1'),
+                  localeProvider.tr('dsa.card3_feat2'),
+                  localeProvider.tr('dsa.card3_feat3'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _DSACard extends StatelessWidget {
+  final String category;
+  final String title;
+  final String description;
+  final List<String> features;
+
+  const _DSACard({
+    required this.category,
+    required this.title,
+    required this.description,
+    required this.features,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: border),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Category tag
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              category,
+              style: bodyTextStyle.copyWith(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: primary,
+                letterSpacing: 0.8,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Title
+          Text(
+            title,
+            style: headlineSecondaryTextStyle.copyWith(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Description
+          Text(
+            description,
+            style: bodyTextStyle.copyWith(
+              fontSize: 13,
+              color: Colors.black54,
+              height: 1.6,
+            ),
+          ),
+          const SizedBox(height: 20),
+          // Features
+          ...features.asMap().entries.map((entry) {
+            final index = entry.key;
+            final feature = entry.value;
+            return Padding(
+              padding: EdgeInsets.only(bottom: index < features.length - 1 ? 10 : 0),
+              child: Row(
+                children: [
+                  Icon(Icons.check_circle, size: 16, color: primary),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      feature,
+                      style: bodyTextStyle.copyWith(
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
         ],
       ),
     );
@@ -2968,6 +3184,7 @@ class CompactFooterBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     return GestureDetector(
       onTap: () => _showFullFooter(context),
       child: Container(
@@ -3033,6 +3250,7 @@ class CompactFooterBanner extends StatelessWidget {
   }
 
   void _showFullFooter(BuildContext context) {
+      final localeProvider = context.read<LocaleProvider>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

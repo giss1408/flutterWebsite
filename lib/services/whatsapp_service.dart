@@ -1,22 +1,20 @@
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_website/config/environment.dart';
+import 'package:flutter_website/i18n/translations.dart';
 
 /// WhatsApp integration service for messaging
 class WhatsAppService {
   // WhatsApp business number — Côte d'Ivoire number
   // ⚠️ REMPLACEZ CE NUMÉRO par votre numéro WhatsApp Business
   static const String businessPhone = '+2250102030405'; // Replace with actual number
-  
-  // Default message templates
-  static const String defaultMessage = 'Bonjour, j\'aimerais en savoir plus sur vos services.';
-  
-  static const Map<String, String> messageTemplates = {
-    'general': 'Bonjour, j\'aimerais en savoir plus sur vos services.',
-    'travel': 'J\'aimerais un devis pour un voyage. Pouvez-vous me proposer des destinations?',
-    'immobilier': 'Je suis intéressé par une propriété. Pouvez-vous m\'envoyer plus de détails?',
-    'loisir': 'Je voudrais connaître les activités disponibles et les tarifs.',
-    'support': 'J\'ai une question concernant votre service.',
-  };
+
+  // Default message templates — now using Translations.translate
+  static String get defaultMessage => Translations.translate('wa.general', 'fr');
+
+  /// Returns a translated template message for the given [templateKey] and [locale].
+  static String getTemplateMessage(String templateKey, String locale) {
+    return Translations.translate('wa.$templateKey', locale);
+  }
 
   /// Launch WhatsApp with default message
   static Future<void> openWhatsApp({String? message}) async {
@@ -25,8 +23,8 @@ class WhatsAppService {
   }
 
   /// Launch WhatsApp with predefined template
-  static Future<void> openWhatsAppWithTemplate(String templateKey) async {
-    final message = messageTemplates[templateKey] ?? defaultMessage;
+  static Future<void> openWhatsAppWithTemplate(String templateKey, {String locale = 'fr'}) async {
+    final message = getTemplateMessage(templateKey, locale);
     await _launchWhatsApp(businessPhone, message);
   }
 
@@ -40,11 +38,11 @@ class WhatsAppService {
     try {
       // URL encode the message
       final encodedMessage = Uri.encodeComponent(message);
-      
+
       // Create WhatsApp link
       // For web, use the WhatsApp Web URL
       final whatsappUrl = 'https://wa.me/$phone?text=$encodedMessage';
-      
+
       if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
         await launchUrl(
           Uri.parse(whatsappUrl),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
 import 'package:flutter_website/models/tour_package.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
 
 /// Collapsible itinerary section display
 class ItinerarySection extends StatefulWidget {
@@ -31,6 +33,7 @@ class _ItinerarySectionState extends State<ItinerarySection> {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     final filteredItinerary = widget.itinerary
         .take(_selectedDuration)
         .toList();
@@ -49,7 +52,7 @@ class _ItinerarySectionState extends State<ItinerarySection> {
                   Padding(
                     padding: const EdgeInsets.only(right: 12),
                     child: FilterChip(
-                      label: Text('$duration Days'),
+                      label: Text('$duration ${localeProvider.tr('itin.days')}'),
                       selected: _selectedDuration == duration,
                       onSelected: (selected) {
                         if (selected) {
@@ -98,6 +101,7 @@ class _ItinerarySectionState extends State<ItinerarySection> {
               isExpanded: isExpanded,
               isLastDay: isLastDay,
               tierColor: widget.tierColor,
+              localeProvider: localeProvider,
               onTap: () {
                 setState(() {
                   _expandedDay = isExpanded ? -1 : index;
@@ -117,6 +121,7 @@ class _ItineraryDayTile extends StatelessWidget {
   final bool isExpanded;
   final bool isLastDay;
   final Color tierColor;
+  final LocaleProvider localeProvider;
   final VoidCallback onTap;
 
   const _ItineraryDayTile({
@@ -124,6 +129,7 @@ class _ItineraryDayTile extends StatelessWidget {
     required this.isExpanded,
     required this.isLastDay,
     required this.tierColor,
+    required this.localeProvider,
     required this.onTap,
   });
 
@@ -264,15 +270,15 @@ class _ItineraryDayTile extends StatelessWidget {
                                     switch (meal.trim()) {
                                       case 'B':
                                         mealIcon = Icons.emoji_food_beverage;
-                                        mealName = 'Breakfast';
+                                        mealName = localeProvider.tr('itin.breakfast');
                                         break;
                                       case 'L':
                                         mealIcon = Icons.lunch_dining;
-                                        mealName = 'Lunch';
+                                        mealName = localeProvider.tr('itin.lunch');
                                         break;
                                       case 'D':
                                         mealIcon = Icons.dinner_dining;
-                                        mealName = 'Dinner';
+                                        mealName = localeProvider.tr('itin.dinner');
                                         break;
                                       default:
                                         mealIcon = Icons.fastfood;
@@ -317,7 +323,7 @@ class _ItineraryDayTile extends StatelessWidget {
                               const SizedBox(height: 12),
                               // Activities
                               Text(
-                                'Activities & Highlights',
+                                localeProvider.tr('itin.activities'),
                                 style: ModernTypography.bodySmall.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),

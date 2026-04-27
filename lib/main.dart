@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_website/config/environment.dart';
 import 'package:flutter_website/config/modern_theme_builder.dart';
 import 'package:flutter_website/providers/theme_provider.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
 import 'package:flutter_website/services/analytics_service.dart';
 import 'package:flutter_website/services/error_handler.dart';
 import 'package:flutter_website/components/floating_whatsapp_button.dart';
@@ -14,7 +15,9 @@ import 'package:flutter_website/pages/immobilier_page.dart';
 import 'package:flutter_website/pages/loisir_page.dart';
 import 'package:flutter_website/pages/tourism_page.dart';
 import 'package:flutter_website/pages/analytics_dashboard_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
 
 void main() async {
   // Minimal startup - defer non-critical initialization
@@ -22,13 +25,15 @@ void main() async {
   
   // Initialize critical services only
   final themeProvider = ThemeProvider()..initializeTheme();
+  final localeProvider = LocaleProvider();
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => themeProvider),
+        ChangeNotifierProvider.value(value: localeProvider),
       ],
-      child: const MyApp(),
+      child: MyApp(localeProvider: localeProvider),
     ),
   );
 
@@ -52,7 +57,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final LocaleProvider localeProvider;
+  const MyApp({super.key, required this.localeProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +66,13 @@ class MyApp extends StatelessWidget {
       builder: (context, themeProvider, _) {
         return MaterialApp(
           title: 'Regisse__ #Business Solutions — SaaS, Design & Développement Sur Mesure',
+          locale: localeProvider.flutterLocale,
+          supportedLocales: const [Locale('fr'), Locale('en'), Locale('de')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           theme: ModernThemeBuilder.buildLightTheme(),
           darkTheme: ModernThemeBuilder.buildDarkTheme(),
           themeMode: themeProvider.themeMode,
@@ -222,8 +235,9 @@ List<Widget> blocks = [
   const BlockWrapper(ProcessSteps()),
   // ── Client testimonials ───────────────────────────────────────────────────────
   const BlockWrapper(Testimonials()),
-  // ── News ─────────────────────────────────────────────────────────────────────
-  const BlockWrapper(FlutterNewsRow()),
+  // ── Digital solutions Africa ─────────────────────────────────────────────────
+  const BlockWrapper(DigitalSolutionsAfrica()),
+
   // ── Contact CTA ───────────────────────────────────────────────────────────────
   const BlockWrapper(InstallFlutter()),
   // ── Footer ────────────────────────────────────────────────────────────────────

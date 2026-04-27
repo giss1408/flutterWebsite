@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
+
 
 class ImmobilierPage extends StatelessWidget {
   const ImmobilierPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.watch<LocaleProvider>().tr;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Immobilier'),
+        title: Text(tr('immo.title')),
         elevation: 0,
         backgroundColor: ModernColors.backgroundCard,
         foregroundColor: ModernColors.textPrimary,
@@ -30,7 +34,7 @@ class ImmobilierPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Immobilier',
+                    tr('immo.title'),
                     style: ModernTypography.displayLarge.copyWith(
                       color: ModernColors.textWhite,
                     ),
@@ -38,7 +42,7 @@ class ImmobilierPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Find your perfect property in prime locations',
+                    tr('immo.subtitle'),
                     style: ModernTypography.bodyLarge.copyWith(
                       color: ModernColors.textWhite,
                     ),
@@ -56,7 +60,7 @@ class ImmobilierPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Featured Properties',
+                      tr('immo.featured'),
                       style: ModernTypography.headlineLarge,
                     ),
                     const SizedBox(height: 32),

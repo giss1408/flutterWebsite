@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
 import 'package:flutter_website/services/whatsapp_service.dart';
 import 'package:flutter_website/services/analytics_service.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
 
 class FloatingWhatsAppButton extends StatefulWidget {
   final String? customMessage;
@@ -65,6 +67,8 @@ class _FloatingWhatsAppButtonState extends State<FloatingWhatsAppButton>
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
+
     // Positioned must be DIRECT child of Stack
     return Positioned(
       bottom: 24,
@@ -101,7 +105,7 @@ class _FloatingWhatsAppButtonState extends State<FloatingWhatsAppButton>
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          'Chat with us on WhatsApp',
+                          localeProvider.tr('whatsapp.chat'),
                           style: ModernTypography.bodySmall.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,

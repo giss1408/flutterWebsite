@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
 
 /// Highlight card for tourism features
 class HighlightCard extends StatefulWidget {
@@ -145,48 +147,49 @@ class HighlightsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     final isMobile = MediaQuery.of(context).size.width < 768;
     final crossAxisCount = isMobile ? 1 : 3;
 
     final highlights = [
       {
-        'title': 'Cultural Experiences',
-        'description': 'Immerse yourself in vibrant local traditions, arts, and heritage sites across Côte d\'Ivoire',
+        'title': localeProvider.tr('highlight.cultural'),
+        'description': localeProvider.tr('highlight.cultural_desc'),
         'icon': Icons.palette,
         'color': Color(0xFF7C3AED), // Purple
         'image': 'images/highlights/highlight_cultural.jpg',
       },
       {
-        'title': 'Wildlife & Nature',
-        'description': 'Explore protected forests, national parks, and diverse wildlife including rare species',
+        'title': localeProvider.tr('highlight.wildlife'),
+        'description': localeProvider.tr('highlight.wildlife_desc'),
         'icon': Icons.forest,
         'color': Color(0xFF00B369), // Green
         'image': 'images/highlights/highlight_wildlife.jpg',
       },
       {
-        'title': 'Beach Relaxation',
-        'description': 'Unwind on pristine sandy beaches with crystal-clear waters and ocean breezes',
+        'title': localeProvider.tr('highlight.beach'),
+        'description': localeProvider.tr('highlight.beach_desc'),
         'icon': Icons.beach_access,
         'color': Color(0xFF00D9FF), // Teal
         'image': 'images/highlights/highlight_beach.jpg',
       },
       {
-        'title': 'Culinary Delights',
-        'description': 'Taste authentic Ivorian cuisine and discover local flavors through market tours and cooking classes',
+        'title': localeProvider.tr('highlight.cuisine'),
+        'description': localeProvider.tr('highlight.cuisine_desc'),
         'icon': Icons.restaurant,
         'color': Color(0xFFFF6B35), // Orange
         'image': 'images/highlights/highlight_cuisine.jpg',
       },
       {
-        'title': 'Adventure Activities',
-        'description': 'Experience hiking, water sports, safari tours, and thrilling outdoor adventures',
+        'title': localeProvider.tr('highlight.adventure'),
+        'description': localeProvider.tr('highlight.adventure_desc'),
         'icon': Icons.landscape,
         'color': Color(0xFFFFB700), // Gold
         'image': 'images/highlights/highlight_adventure.jpg',
       },
       {
-        'title': 'Photography Spots',
-        'description': 'Capture stunning landscapes, sunsets, and candid moments perfect for any photographer',
+        'title': localeProvider.tr('highlight.photography'),
+        'description': localeProvider.tr('highlight.photography_desc'),
         'icon': Icons.photo_camera,
         'color': Color(0xFF1389FD), // Blue
         'image': 'images/highlights/highlight_photography.jpg',

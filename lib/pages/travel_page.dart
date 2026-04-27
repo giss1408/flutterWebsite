@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
+
 
 class TravelPage extends StatelessWidget {
   const TravelPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.watch<LocaleProvider>().tr;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Travel'),
+        title: Text(tr('travel.title')),
         elevation: 0,
         backgroundColor: ModernColors.backgroundCard,
         foregroundColor: ModernColors.textPrimary,
@@ -30,7 +34,7 @@ class TravelPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Travel',
+                    tr('travel.title'),
                     style: ModernTypography.displayLarge.copyWith(
                       color: ModernColors.textWhite,
                     ),
@@ -38,7 +42,7 @@ class TravelPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Discover the world with our exclusive travel experiences',
+                    tr('travel.subtitle'),
                     style: ModernTypography.bodyLarge.copyWith(
                       color: ModernColors.textWhite,
                     ),

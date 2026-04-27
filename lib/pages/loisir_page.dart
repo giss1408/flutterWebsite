@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
+
 
 class LoisirPage extends StatelessWidget {
   const LoisirPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.watch<LocaleProvider>().tr;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Loisir'),
+        title: Text(tr('loisir.title')),
         elevation: 0,
         backgroundColor: ModernColors.backgroundCard,
         foregroundColor: ModernColors.textPrimary,
@@ -34,7 +38,7 @@ class LoisirPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Loisir & Divertissement',
+                    tr('loisir.title'),
                     style: ModernTypography.displayLarge.copyWith(
                       color: ModernColors.textWhite,
                     ),
@@ -42,7 +46,7 @@ class LoisirPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Discover amazing experiences and entertainment',
+                    tr('loisir.subtitle'),
                     style: ModernTypography.bodyLarge.copyWith(
                       color: ModernColors.textWhite,
                     ),
@@ -60,7 +64,7 @@ class LoisirPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Popular Activities',
+                      tr('loisir.popular'),
                       style: ModernTypography.headlineLarge,
                     ),
                     const SizedBox(height: 32),

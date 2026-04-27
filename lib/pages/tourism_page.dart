@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
 import 'package:flutter_website/models/tour_package.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
 import 'package:flutter_website/services/whatsapp_service.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class TourismPage extends StatefulWidget {
@@ -15,6 +17,7 @@ class _TourismPageState extends State<TourismPage> {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 768;
+    final localeProvider = context.watch<LocaleProvider>();
 
     final allTours = [
       TourDatabase.budgetTours.first,
@@ -118,7 +121,7 @@ class _TourismPageState extends State<TourismPage> {
                                   color: Colors.white.withAlpha(60)),
                             ),
                             child: Text(
-                              'SÉJOURS SUR MESURE',
+                              localeProvider.tr('tourism.hero_badge'),
                               style: ModernTypography.labelSmall.copyWith(
                                 color: Colors.white,
                                 letterSpacing: 1.5,
@@ -128,7 +131,7 @@ class _TourismPageState extends State<TourismPage> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Découvrez la\nCôte d\'Ivoire',
+                            localeProvider.tr('tourism.hero_title'),
                             style: ModernTypography.displayMedium.copyWith(
                               color: Colors.white,
                               fontSize: isMobile ? 36 : 52,
@@ -137,7 +140,7 @@ class _TourismPageState extends State<TourismPage> {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'Des expériences authentiques du golfe de Guinée\naux savanes du nord',
+                            localeProvider.tr('tourism.hero_subtitle'),
                             style: ModernTypography.bodyLarge.copyWith(
                               color: Colors.white.withOpacity(0.9),
                               fontSize: isMobile ? 14 : 16,
@@ -147,13 +150,12 @@ class _TourismPageState extends State<TourismPage> {
                           ElevatedButton.icon(
                             onPressed: () {
                               WhatsAppService.openWhatsApp(
-                                message:
-                                    'Bonjour, je souhaite organiser un séjour en Côte d\'Ivoire. Pouvez-vous m\'aider?',
+                                message: localeProvider.tr('wa.travel'),
                               );
                             },
                             icon: const Text('💬'),
                             label: Text(
-                              'Parler à un conseiller',
+                              localeProvider.tr('tourism.hero_cta'),
                               style: ModernTypography.labelLarge.copyWith(
                                 color: ModernColors.primary,
                                 fontWeight: FontWeight.w700,
@@ -186,7 +188,7 @@ class _TourismPageState extends State<TourismPage> {
               child: Column(
                 children: [
                   Text(
-                    'Choisissez votre aventure',
+                    localeProvider.tr('tourism.section_title'),
                     style: ModernTypography.headlineLarge.copyWith(
                       fontSize: isMobile ? 26 : 32,
                     ),
@@ -194,7 +196,7 @@ class _TourismPageState extends State<TourismPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Trois formules pensées pour chaque style de voyageur',
+                    localeProvider.tr('tourism.section_subtitle'),
                     style: ModernTypography.bodyLarge.copyWith(
                       color: ModernColors.textSecondary,
                     ),
@@ -248,7 +250,7 @@ class _TourismPageState extends State<TourismPage> {
               child: Column(
                 children: [
                   Text(
-                    'Ce qui vous attend',
+                    localeProvider.tr('tourism.highlights_title'),
                     style: ModernTypography.headlineLarge.copyWith(
                       fontSize: isMobile ? 26 : 32,
                     ),
@@ -256,7 +258,7 @@ class _TourismPageState extends State<TourismPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Des expériences inoubliables à travers tout le pays',
+                    localeProvider.tr('tourism.highlights_subtitle'),
                     style: ModernTypography.bodyLarge.copyWith(
                       color: ModernColors.textSecondary,
                     ),
@@ -285,7 +287,7 @@ class _TourismPageState extends State<TourismPage> {
               child: Column(
                 children: [
                   Text(
-                    'Prêt pour l\'aventure ?',
+                    localeProvider.tr('tourism.cta_title'),
                     style: ModernTypography.displaySmall.copyWith(
                       color: Colors.white,
                       fontSize: isMobile ? 28 : 36,
@@ -294,7 +296,7 @@ class _TourismPageState extends State<TourismPage> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Contactez-nous dès maintenant pour un devis personnalisé',
+                    localeProvider.tr('tourism.cta_subtitle'),
                     style: ModernTypography.bodyLarge.copyWith(
                       color: Colors.white.withOpacity(0.9),
                     ),
@@ -304,13 +306,12 @@ class _TourismPageState extends State<TourismPage> {
                   ElevatedButton.icon(
                     onPressed: () {
                       WhatsAppService.openWhatsApp(
-                        message:
-                            'Bonjour, j\'aimerais un devis personnalisé pour une visite en Côte d\'Ivoire. Pouvez-vous m\'aider?',
+                        message: localeProvider.tr('wa.travel'),
                       );
                     },
                     icon: const Text('💬'),
                     label: Text(
-                      'Obtenir un devis',
+                      localeProvider.tr('tourism.cta_button'),
                       style: ModernTypography.labelLarge.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -332,9 +333,9 @@ class _TourismPageState extends State<TourismPage> {
                     runSpacing: 8,
                     alignment: WrapAlignment.center,
                     children: [
-                      _TrustBadge(text: 'Réponse sous 24h'),
-                      _TrustBadge(text: 'Devis gratuit'),
-                      _TrustBadge(text: 'Assistance dédiée'),
+                      _TrustBadge(text: localeProvider.tr('tourism.trust_1')),
+                      _TrustBadge(text: localeProvider.tr('tourism.trust_2')),
+                      _TrustBadge(text: localeProvider.tr('tourism.trust_3')),
                     ],
                   ),
                 ],
@@ -355,114 +356,116 @@ class _TourismPageState extends State<TourismPage> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (context) => DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.65,
-        builder: (context, scrollController) => Padding(
-          padding: const EdgeInsets.all(24),
-          child: ListView(
-            controller: scrollController,
-            children: [
-              Center(
-                child: Container(
-                  width: 36,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    color: ModernColors.border,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(package.tierIcon,
-                          color: package.tierColor, size: 28),
-                      const SizedBox(width: 12),
-                      Text(
-                        package.title,
-                        style: ModernTypography.headlineSmall.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Text(
-                package.description,
-                style: ModernTypography.bodyMedium.copyWith(
-                  color: ModernColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Inclusions
-              Text(
-                'Ce qui est inclus',
-                style: ModernTypography.titleLarge.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 12),
-              ...package.inclusions.map((inc) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: package.tierColor,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          inc,
-                          style: ModernTypography.bodyMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-              const SizedBox(height: 24),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    WhatsAppService.openWhatsApp(
-                      message:
-                          'Je suis intéressé par ${package.title}. Pouvez-vous me proposer un devis?',
-                    );
-                  },
-                  icon: const Text('💬'),
-                  label: const Text('Demander un Devis'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: package.tierColor,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(ModernRadius.sm),
+      builder: (context) {
+        final localeProvider = context.watch<LocaleProvider>();
+        return DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.65,
+          builder: (context, scrollController) => Padding(
+            padding: const EdgeInsets.all(24),
+            child: ListView(
+              controller: scrollController,
+              children: [
+                Center(
+                  child: Container(
+                    width: 36,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: ModernColors.border,
+                      borderRadius: BorderRadius.circular(2),
                     ),
-                    elevation: 0,
                   ),
                 ),
-              ),
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(package.tierIcon,
+                            color: package.tierColor, size: 28),
+                        const SizedBox(width: 12),
+                        Text(
+                          package.title,
+                          style: ModernTypography.headlineSmall.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  package.description,
+                  style: ModernTypography.bodyMedium.copyWith(
+                    color: ModernColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Inclusions
+                Text(
+                  localeProvider.tr('tourism.modal_inclusions'),
+                  style: ModernTypography.titleLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ...package.inclusions.map((inc) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          color: package.tierColor,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            inc,
+                            style: ModernTypography.bodyMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+                const SizedBox(height: 24),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      WhatsAppService.openWhatsApp(
+                        message: localeProvider.tr('tourism.whatsapp_msg').replaceAll('{package}', package.title),
+                      );
+                    },
+                    icon: const Text('💬'),
+                    label: Text(localeProvider.tr('tourism.modal_cta')),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: package.tierColor,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(ModernRadius.sm),
+                      ),
+                      elevation: 0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

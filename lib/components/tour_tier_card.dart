@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_website/components/components.dart';
 import 'package:flutter_website/models/tour_package.dart';
+import 'package:flutter_website/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
+
 
 /// Compact, professional tour tier card for side-by-side comparison
+
 class TourTierCard extends StatefulWidget {
   final TourPackage package;
   final VoidCallback onViewDetails;
@@ -56,7 +60,9 @@ class _TourTierCardState extends State<TourTierCard>
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     final isMobile = MediaQuery.of(context).size.width < 768;
+
 
     return MouseRegion(
       onEnter: (_) => _onHover(true),
@@ -183,8 +189,9 @@ class _TourTierCardState extends State<TourTierCard>
                                         isSelected ? _tierColor : _tierBorder),
                               ),
                               child: Text(
-                                '$d jours',
+                                '$d ${localeProvider.tr('itin.days')}',
                                 style: ModernTypography.bodySmall.copyWith(
+
                                   color: isSelected ? Colors.white : _tierColor,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -209,7 +216,8 @@ class _TourTierCardState extends State<TourTierCard>
 
                         // Key highlights (compact tags)
                         Text(
-                          'Points forts',
+                          localeProvider.tr('tourism.tier_highlights'),
+
                           style: ModernTypography.bodySmall.copyWith(
                             fontWeight: FontWeight.w600,
                             color: ModernColors.textPrimary,
@@ -254,7 +262,7 @@ class _TourTierCardState extends State<TourTierCard>
                               ),
                             ),
                             child: Text(
-                              'Voir le parcours',
+                              localeProvider.tr('tourism.tier_view'),
                               style: ModernTypography.labelLarge.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
@@ -268,7 +276,8 @@ class _TourTierCardState extends State<TourTierCard>
                           child: OutlinedButton(
                             onPressed: () {
                               widget.onWhatsApp?.call(
-                                'Je suis intéressé par ${widget.package.title}. Pouvez-vous me proposer un devis?',
+                                localeProvider.tr('tourism.whatsapp_msg').replaceAll('{package}', widget.package.title),
+
                               );
                             },
                             style: OutlinedButton.styleFrom(
@@ -283,7 +292,8 @@ class _TourTierCardState extends State<TourTierCard>
                               ),
                             ),
                             child: Text(
-                              'WhatsApp',
+                              localeProvider.tr('tourism.tier_whatsapp'),
+
                               style: ModernTypography.labelLarge.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
