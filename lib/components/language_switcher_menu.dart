@@ -21,7 +21,7 @@ class LanguageSwitcherMenu extends StatelessWidget {
         final current = localeProvider.locale;
 
         return Tooltip(
-          message: 'Language: ${LocaleUtils.getNativeName(current)}',
+          message: 'Language: ${LocaleUtils.getNativeName(current)} (tap to cycle)',
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
@@ -30,13 +30,19 @@ class LanguageSwitcherMenu extends StatelessWidget {
               },
               child: Container(
                 padding: padding,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(borderRadius),
-                ),
                 child: Text(
                   LocaleUtils.getLocaleEmoji(current),
-                  style: const TextStyle(fontSize: 24),
+                  style: const TextStyle(
+                    fontSize: 28,
+                    color: Colors.black87,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(0.5, 0.5),
+                        blurRadius: 1,
+                        color: Colors.black26,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

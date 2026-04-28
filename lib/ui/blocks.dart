@@ -14,7 +14,6 @@ import 'package:flutter_website/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:universal_io/io.dart';
-import 'package:video_player/video_player.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -120,7 +119,7 @@ class WebsiteMenuBar extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Démarrer mon projet',
+                      localeProvider.tr('menu.start_project'),
                       style: buttonTextStyle.copyWith(
                           fontWeight: FontWeight.w600),
                     ),
@@ -270,10 +269,10 @@ class WebsiteMenuBar extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const TravelPage()),
                   );
                 },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text("Travel",
-                      style: TextStyle(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(localeProvider.tr('nav.travel'),
+                      style: const TextStyle(
                           fontSize: 16,
                           color: navLinkColor,
                           fontFamily: fontFamily)),
@@ -293,10 +292,10 @@ class WebsiteMenuBar extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const TourismPage()),
                   );
                 },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text("Tours Côte d'Ivoire",
-                      style: TextStyle(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(localeProvider.tr('nav.tours'),
+                      style: const TextStyle(
                           fontSize: 16,
                           color: navLinkColor,
                           fontFamily: fontFamily)),
@@ -316,10 +315,10 @@ class WebsiteMenuBar extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const ImmobilierPage()),
                   );
                 },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text("Immobilier",
-                      style: TextStyle(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(localeProvider.tr('nav.immobilier'),
+                      style: const TextStyle(
                           fontSize: 16,
                           color: navLinkColor,
                           fontFamily: fontFamily)),
@@ -339,10 +338,10 @@ class WebsiteMenuBar extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const LoisirPage()),
                   );
                 },
-                child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Text("Loisir",
-                        style: TextStyle(
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(localeProvider.tr('nav.loisir'),
+                        style: const TextStyle(
                             fontSize: 16,
                             color: navLinkColor,
                             fontFamily: fontFamily))),
@@ -1012,41 +1011,8 @@ class _FeatureCard extends StatelessWidget {
   }
 }
 
-class BusinessDevelopment extends StatefulWidget {
+class BusinessDevelopment extends StatelessWidget {
   const BusinessDevelopment({super.key});
-
-  @override
-  State<BusinessDevelopment> createState() => _BusinessDevelopmentState();
-}
-
-class _BusinessDevelopmentState extends State<BusinessDevelopment> {
-  late VideoPlayerController videoController;
-  late Future<void> initializeVideoPlayerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    videoController = VideoPlayerController.asset("assets/videos/BusinessDevelopment.mp4");
-    videoController.setVolume(0);
-    videoController.setLooping(true);
-    initializeVideoPlayerFuture = videoController.initialize().then((_) {
-      if (mounted) {
-        // Display the first frame of the video before playback.
-        setState(() {});
-        videoPlay();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    videoController.dispose();
-    super.dispose();
-  }
-
-  void videoPlay() {
-    videoController.play();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -1066,22 +1032,20 @@ class _BusinessDevelopmentState extends State<BusinessDevelopment> {
         children: [
           ResponsiveRowColumnItem(
             rowFlex: 2,
-            child: FutureBuilder(
-              future: initializeVideoPlayerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  // If the VideoPlayerController has finished initialization, use
-                  // the data it provides to limit the aspect ratio of the VideoPlayer.
-                  return AspectRatio(
-                    aspectRatio: videoController.value.aspectRatio,
-                    child: RepaintBoundary(child: VideoPlayer(videoController)),
-                  );
-                } else {
-                  // If the VideoPlayerController is still initializing, show a
-                  // loading spinner.
-                  return Container();
-                }
-              },
+            child: Container(
+              color: Colors.grey[200],
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.video_library, size: 64, color: Colors.grey[400]),
+                    const SizedBox(height: 12),
+                    Text('Video Removed',
+                        style: bodyTextStyle.copyWith(
+                            color: Colors.grey[600], fontSize: 14)),
+                  ],
+                ),
+              ),
             ),
           ),
           ResponsiveRowColumnItem(
@@ -1156,42 +1120,8 @@ class _BusinessDevelopmentState extends State<BusinessDevelopment> {
   }
 }
 
-class BeautifulUI extends StatefulWidget {
+class BeautifulUI extends StatelessWidget {
   const BeautifulUI({super.key});
-
-  @override
-  State<BeautifulUI> createState() => _BeautifulUIState();
-}
-
-class _BeautifulUIState extends State<BeautifulUI> {
-  late VideoPlayerController videoController;
-  late Future<void> initializeVideoPlayerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    videoController =
-        VideoPlayerController.asset("assets/videos/BeautifulUI.mp4");
-    videoController.setVolume(0);
-    videoController.setLooping(true);
-    initializeVideoPlayerFuture = videoController.initialize().then((_) {
-      if (mounted) {
-        // Display the first frame of the video before playback.
-        setState(() {});
-        videoPlay();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    videoController.dispose();
-    super.dispose();
-  }
-
-  void videoPlay() {
-    videoController.play();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -1275,22 +1205,20 @@ class _BeautifulUIState extends State<BeautifulUI> {
           ResponsiveRowColumnItem(
             rowFlex: 2,
             columnOrder: 1,
-            child: FutureBuilder(
-              future: initializeVideoPlayerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  // If the VideoPlayerController has finished initialization, use
-                  // the data it provides to limit the aspect ratio of the VideoPlayer.
-                  return AspectRatio(
-                    aspectRatio: videoController.value.aspectRatio,
-                    child: RepaintBoundary(child: VideoPlayer(videoController)),
-                  );
-                } else {
-                  // If the VideoPlayerController is still initializing, show a
-                  // loading spinner.
-                  return Container();
-                }
-              },
+            child: Container(
+              color: Colors.grey[200],
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.image, size: 64, color: Colors.grey[400]),
+                    const SizedBox(height: 12),
+                    Text('Beautiful UI',
+                        style: bodyTextStyle.copyWith(
+                            color: Colors.grey[600], fontSize: 14)),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -1299,42 +1227,8 @@ class _BeautifulUIState extends State<BeautifulUI> {
   }
 }
 
-class NativePerformance extends StatefulWidget {
+class NativePerformance extends StatelessWidget {
   const NativePerformance({super.key});
-
-  @override
-  State<NativePerformance> createState() => _NativePerformanceState();
-}
-
-class _NativePerformanceState extends State<NativePerformance> {
-  late VideoPlayerController videoController;
-  late Future<void> initializeVideoPlayerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    videoController =
-        VideoPlayerController.asset("assets/videos/NativePerformance.mp4");
-    videoController.setVolume(0);
-    videoController.setLooping(true);
-    initializeVideoPlayerFuture = videoController.initialize().then((_) {
-      if (mounted) {
-        // Display the first frame of the video before playback.
-        setState(() {});
-        videoPlay();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    videoController.dispose();
-    super.dispose();
-  }
-
-  void videoPlay() {
-    videoController.play();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -1354,22 +1248,20 @@ class _NativePerformanceState extends State<NativePerformance> {
         children: [
           ResponsiveRowColumnItem(
             rowFlex: 2,
-            child: FutureBuilder(
-              future: initializeVideoPlayerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  // If the VideoPlayerController has finished initialization, use
-                  // the data it provides to limit the aspect ratio of the VideoPlayer.
-                  return AspectRatio(
-                    aspectRatio: videoController.value.aspectRatio,
-                    child: RepaintBoundary(child: VideoPlayer(videoController)),
-                  );
-                } else {
-                  // If the VideoPlayerController is still initializing, show a
-                  // loading spinner.
-                  return Container();
-                }
-              },
+            child: Container(
+              color: Colors.grey[200],
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.speed, size: 64, color: Colors.grey[400]),
+                    const SizedBox(height: 12),
+                    Text('Native Performance',
+                        style: bodyTextStyle.copyWith(
+                            color: Colors.grey[600], fontSize: 14)),
+                  ],
+                ),
+              ),
             ),
           ),
           ResponsiveRowColumnItem(
@@ -2621,21 +2513,16 @@ class Testimonials extends StatelessWidget {
             rowCrossAxisAlignment: CrossAxisAlignment.start,
             rowSpacing: 24,
             columnSpacing: 24,
-            children: const [
+            children: [
               ResponsiveRowColumnItem(
                 rowFlex: 1,
                 rowFit: FlexFit.tight,
                 child: _TestimonialCard(
-                  quote:
-                      "Regisse__ a transform\u00e9 notre vision en un produit "
-                      "concret en moins de 6\u00a0semaines. L\u2019\u00e9quipe "
-                      "allie rigueur technique et compr\u00e9hension m\u00e9tier "
-                      "\u2014 exactement ce dont nous avions besoin pour lancer "
-                      "sur le march\u00e9 allemand.",
+                  quote: localeProvider.tr('testi.quote1'),
                   name: "Amara D.",
-                  role: "CEO",
+                  role: localeProvider.tr('testi.role1_company').split(' • ')[0],
                   company: "FinnoTech GmbH",
-                  avatarColor: Color(0xFF1565C0),
+                  avatarColor: const Color(0xFF1565C0),
                   initials: "AD",
                 ),
               ),
@@ -2643,15 +2530,11 @@ class Testimonials extends StatelessWidget {
                 rowFlex: 1,
                 rowFit: FlexFit.tight,
                 child: _TestimonialCard(
-                  quote:
-                      "Notre plateforme de r\u00e9servation \u00e9tait vieillissante. "
-                      "Regisse__ l\u2019a enti\u00e8rement repens\u00e9e en gardant "
-                      "la logique m\u00e9tier existante. R\u00e9sultat\u00a0: "
-                      "+34\u00a0% de conversions d\u00e8s le premier mois.",
+                  quote: localeProvider.tr('testi.quote2'),
                   name: "Isabelle M.",
-                  role: "Directrice Digitale",
+                  role: localeProvider.tr('testi.role2_company').split(' • ')[0],
                   company: "Tourisma SA",
-                  avatarColor: Color(0xFF00897B),
+                  avatarColor: const Color(0xFF00897B),
                   initials: "IM",
                 ),
               ),
@@ -2659,15 +2542,11 @@ class Testimonials extends StatelessWidget {
                 rowFlex: 1,
                 rowFit: FlexFit.tight,
                 child: _TestimonialCard(
-                  quote:
-                      "Ce qui m\u2019a convaincu, c\u2019est leur approche "
-                      "structur\u00e9e\u00a0: un atelier de cadrage s\u00e9rieux, "
-                      "des maquettes valid\u00e9es avant tout d\u00e9veloppement, "
-                      "et des livraisons ponctuelles \u00e0 chaque sprint.",
+                  quote: localeProvider.tr('testi.quote3'),
                   name: "Kofi A.",
-                  role: "CTO",
+                  role: localeProvider.tr('testi.role3_company').split(' • ')[0],
                   company: "LogiSoft Africa",
-                  avatarColor: Color(0xFFE65100),
+                  avatarColor: const Color(0xFFE65100),
                   initials: "KA",
                 ),
               ),
@@ -2969,6 +2848,7 @@ class Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = context.watch<LocaleProvider>();
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
     return Container(
       color: backgroundDark,
@@ -3144,7 +3024,7 @@ class Footer extends StatelessWidget {
           const SizedBox(height: 20),
           // Bottom bar: copyright
           Text(
-            "© ${DateTime.now().year} Regisse__ GmbH. Tous droits réservés.",
+            "© ${DateTime.now().year} ${localeProvider.tr('footer.copyright')}",
             style: bodyTextStyle.copyWith(
               fontSize: 12,
               color: Colors.white.withOpacity(0.40),
@@ -3406,7 +3286,7 @@ class CompactFooterBanner extends StatelessWidget {
                         color: Colors.white.withOpacity(0.10), thickness: 1),
                     const SizedBox(height: 12),
                     Text(
-                      "© ${DateTime.now().year} Regisse__ GmbH. Tous droits réservés.",
+                      "© ${DateTime.now().year} ${localeProvider.tr('footer.copyright')}",
                       style: bodyTextStyle.copyWith(
                         fontSize: 12,
                         color: Colors.white.withOpacity(0.40),

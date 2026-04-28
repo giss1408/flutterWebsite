@@ -211,18 +211,34 @@ class _HomePageState extends State<_HomePage> {
 
 List<Widget> blocks = [
   // ── Hero ────────────────────────────────────────────────────────────────────
-  MaxWidthBox(
-    maxWidth: 1200,
-    child: FittedBox(
-      fit: BoxFit.fitWidth,
-      alignment: Alignment.topCenter,
-      child: Container(
+  LayoutBuilder(
+    builder: (context, constraints) {
+      final isMobile = constraints.maxWidth < 768;
+      final double carouselHeight;
+
+      if (isMobile) {
+        // Use the taller layout so FittedBox produces a bigger carousel on mobile
+        // Container height × (screenWidth / 1200) = displayed height
+        // 960 × (375 / 1200) ≈ 300px displayed → occupies ~40% of viewport
+        carouselHeight = 960;
+      } else {
+        carouselHeight = 640;
+      }
+
+      return FittedBox(
+        fit: BoxFit.fitWidth,
+        clipBehavior: Clip.hardEdge,
+        child: Container(
           width: 1200,
-          height: 640,
+          height: carouselHeight,
           alignment: Alignment.center,
-          child: RepaintBoundary(child: Carousel())),
-    ),
+          child: RepaintBoundary(child: Carousel()),
+        ),
+      );
+    },
   ),
+
+
   // ── Value proposition ────────────────────────────────────────────────────────
   const BlockWrapper(GetStarted()),
   // ── Social proof numbers ─────────────────────────────────────────────────────

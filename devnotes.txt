@@ -22,3 +22,9 @@ docker volume rm
 docker stop $(docker ps -q) && docker rm $(docker ps -aq --filter ancestor=flutter-web-app)
 docker build --no-cache -t flutter-web-app .
 docker run -d -p 8080:80 flutter-web-app
+
+
+
+# Local test
+flutter build web --release
+cd build/web && python3 -m http.server 8080
